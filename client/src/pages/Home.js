@@ -3,9 +3,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Moment from 'react-moment';
-// import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
-import { Card, Container, Row, Col, Button, ListGroup } from "react-bootstrap"
+import { Card, Container, Row, Col, ListGroup } from "react-bootstrap"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Home() {
@@ -99,21 +99,22 @@ function Home() {
 
                   <label className="ml-2 mr-2"> {value.Likes.length}</label>
 
-                  <Button onClick={() => {
+                  {/* <Button onClick={() => {
                     likeAPost(value.id);
                   }}
                     size="sm"
                     variant={
                       likedPosts.includes(value.id) ? "danger" : "outline-danger"
-                    }>{likedPosts.includes(value.id) ? "Dislike" : "Like"}</Button>
-                  {/* <FavoriteIcon 
+                    }>{likedPosts.includes(value.id) ? "Dislike" : "Like"}</Button> */}
+
+                  <FavoriteIcon 
                         onClick={() => {
                           likeAPost(value.id);
                         }}
                         className={
                           likedPosts.includes(value.id) ? "unlikeBttn" : "likeBttn"
                         }
-                      /> */}
+                      />
                   <Link className="float-right" to={`/post/${value.id}`}>Read Comments</Link>
 
                 </Card.Footer>
@@ -122,15 +123,16 @@ function Home() {
           })}
         </Col>
         <Col xs="6">
+        <h3 className="mb-5">Most active users</h3>
           <ListGroup>
           {listOfUsers.slice(0,5).sort((a, b) => b.Comments.length - a.Comments.length).map((value, key) => {
             return (
-              <ListGroup.Item>{value.username}</ListGroup.Item>
+              <ListGroup.Item key={key}> <Link to={`/profile/${value.UserId}`}> {value.name} {value.surname} - {value.username}</Link> </ListGroup.Item>
             );
           })}
           </ListGroup>
           <hr></hr>
-          <h3 className="mb-5">Most popular</h3>
+          <h3 className="mb-5">Most popular questions</h3>
           {listOfPosts.slice(0,5).sort((a, b) => b.Likes.length - a.Likes.length).map((value, key) => {
             return (
               <Card key={key} className="mb-3">
@@ -151,21 +153,22 @@ function Home() {
 
                   <label className="ml-2 mr-2"> {value.Likes.length}</label>
 
-                  <Button onClick={() => {
+                  {/* <Button onClick={() => {
                     likeAPost(value.id);
                   }}
                     size="sm"
                     variant={
                       likedPosts.includes(value.id) ? "danger" : "outline-danger"
-                    }>{likedPosts.includes(value.id) ? "Dislike" : "Like"}</Button>
-                  {/* <FavoriteIcon 
+                    }>{likedPosts.includes(value.id) ? "Dislike" : "Like"}</Button> */}
+
+                  <FavoriteIcon 
                         onClick={() => {
                           likeAPost(value.id);
                         }}
                         className={
                           likedPosts.includes(value.id) ? "unlikeBttn" : "likeBttn"
                         }
-                      /> */}
+                      />
                   <Link className="float-right" to={`/post/${value.id}`}>Read Comments</Link>
 
                 </Card.Footer>

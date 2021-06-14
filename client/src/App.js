@@ -7,6 +7,7 @@ import EditPost from "./pages/EditPost";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
+import PopularQuestions from "./pages/PopularQuestions";
 import ChangePassword from "./pages/ChangePassword";
 import ChangeUsername from "./pages/ChangeUsername";
 // import { useHistory } from "react-router-dom";
@@ -69,6 +70,7 @@ function App() {
                 {authState.status ? (
                   <>
                     <Nav.Link href="/">Home Page</Nav.Link>
+                    <Nav.Link href="/popularquestions">Popular Questions</Nav.Link>
                     <Nav.Link href="/createpost">Ask Question</Nav.Link>
                   </>
                 ) : (<Nav.Link href="/">Home Page</Nav.Link>)}
@@ -76,6 +78,8 @@ function App() {
               <Nav>
                 {authState.status &&
                   <NavDropdown title="My Profile" id="collasible-nav-dropdown">
+                    
+                    <NavDropdown.Item href={`/profile/${authState.id}`}>Notifications</NavDropdown.Item>
                     <NavDropdown.Item href={`/profile/${authState.id}`}>My Questions</NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item href={`/changeusername/${authState.id}`}>Edit Profile</NavDropdown.Item>
@@ -91,7 +95,6 @@ function App() {
             
           </Navbar>
 
-
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/createpost" exact component={CreatePost} />
@@ -99,6 +102,7 @@ function App() {
             <Route path="/editpost" exact component={EditPost} />
             <Route path="/registration" exact component={Registration} />
             <Route path="/login" exact component={Login} />
+            <Route path="/popularquestions" exact component={PopularQuestions} />
             <Route path="/profile/:id" exact component={Profile} />
             <Route path="/changepassword" exact component={ChangePassword} />
             <Route path="/changeusername/:id" exact component={ChangeUsername} />
