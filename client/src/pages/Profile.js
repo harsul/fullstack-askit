@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import { useParams, Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import Moment from 'react-moment';
-// import { AuthContext } from "../helpers/AuthContext";
+import { AuthContext } from "../helpers/AuthContext";
 
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
@@ -13,7 +13,7 @@ function Profile() {
   let history = useHistory();
   const [listOfPosts, setListOfPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
-  // const { authState } = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
 
   useEffect(() => {
 
@@ -36,15 +36,16 @@ function Profile() {
     // eslint-disable-next-line
   }, []);
 
-  // const deletePost = (id) => {
-  //   axios
-  //     .delete(`http://localhost:3001/posts/${id}`, {
-  //       headers: { accessToken: localStorage.getItem("accessToken") },
-  //     })
-  //     .then(() => {
-  //       history.push("/");
-  //     });
-  // };
+  const deletePost = (id) => {
+    axios
+      .delete(`http://localhost:3001/posts/${id}`, {
+        headers: { accessToken: localStorage.getItem("accessToken") },
+      })
+      .then(() => {
+        // history.push("/");
+        window.location.reload()
+      });
+  };
 
   const likeAPost = (postId) => {
     axios
@@ -84,7 +85,7 @@ function Profile() {
 
   return (
     <Container className="mt-5">
-      <h3 className="mb-5">My Questions</h3>
+      <h3 className="mb-5">Questions</h3>
       <Row>
         <Col>
           {listOfPosts.map((value, key) => {
@@ -94,9 +95,9 @@ function Profile() {
                   <Link to={`/profile/${value.UserId}`}> {value.username}</Link>
                   <br></br>
                   <cite title="Source Title"><Moment fromNow>{value.createdAt}</Moment>  </cite>
-                  {/* <cite className="float-right">
+                  <cite className="float-right">
                     {authState.username === value.username && (
-                      <Link onClick={handleShow}>
+                      <Link>
                         Edit
                       </Link>
                     )}
@@ -105,7 +106,7 @@ function Profile() {
                         deletePost(value.id);
                       }}> Delete</Link>
                     )}
-                  </cite> */}
+                  </cite>
                 </Card.Header>
                 <Card.Body onClick={()=> history.push(`/post/${value.id}`)}>
                   <blockquote className="blockquote mb-0">

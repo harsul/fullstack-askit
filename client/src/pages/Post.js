@@ -17,6 +17,7 @@ function Post() {
   const [newComment, setNewComment] = useState("");
   const { authState } = useContext(AuthContext);
   const [postText, setPostText] = useState("");
+  const [likeNumber, setLikeNumber] = useState("");
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -33,6 +34,10 @@ function Post() {
         setPostObject(response.data);
   
         setPostText(response.data.postText)
+
+        setLikeNumber(response.data.Likes.lenght)
+
+        console.log(likeNumber)
   
       });
   
@@ -81,7 +86,6 @@ function Post() {
           };
           setListOfComments([...listOfComments, commentToAdd]);
           setNewComment("");
-
         }
       });
   };
@@ -169,8 +173,6 @@ function Post() {
           console.log("Suceess")
           handleClose()
           window.location.reload();
-          //history.push(`/post/${postObject.id}`)
-          // history.push(`/byId/${postObject.id}`);
         }
       });
   };
@@ -212,6 +214,7 @@ function Post() {
                     }
                   />
                 </footer> */}
+                <label> {likeNumber}</label>
               </blockquote>
             </Card.Body>
             <Card.Footer className="text-muted">
@@ -223,7 +226,7 @@ function Post() {
                   likedPosts.includes(postObject.id) ? "unlikeBttn" : "likeBttn"
                 }
               />
-              {/* <label> {postObject.Likes.lenght}</label> */}
+              <label>{likeNumber}</label>
             </Card.Footer>
           </Card>
         </Col>
