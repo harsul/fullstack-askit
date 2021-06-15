@@ -32,14 +32,14 @@ export default function ChangeUsername() {
 
 
     const onSubmit = (data) => {
-        console.log(name,surname,username)
+        console.log(name, surname, username)
         axios
             .put(
                 "http://localhost:3001/auth/changeusername",
                 {
-                    name:name,
-                    surname:surname,
-                    username:username
+                    name: name,
+                    surname: surname,
+                    username: username
                 },
                 {
                     headers: {
@@ -65,8 +65,7 @@ export default function ChangeUsername() {
                     <Col xs={4}>
                         <Formik
                             initialValues={initialValues}
-                            onSubmit={onSubmit}
-                        >
+                            onSubmit={onSubmit}>
                             <Form>
                                 <div className="form-group">
                                     <label htmlFor="name">Name</label>
@@ -95,6 +94,7 @@ export default function ChangeUsername() {
                                     <br></br>
                                     <ErrorMessage name="username" component="span" />
                                     <Field
+                                        type="email"
                                         className="form-control"
                                         id="inputEmail"
                                         name="username"
