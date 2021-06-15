@@ -13,7 +13,9 @@ function Post() {
   const [postObject, setPostObject] = useState({});
   const [listOfPosts, setListOfPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
+
   const [listOfComments, setListOfComments] = useState([]);
+  const [likedComments, setLikedComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const { authState } = useContext(AuthContext);
   const [postText, setPostText] = useState("");
@@ -44,7 +46,10 @@ function Post() {
       axios.get(`http://localhost:3001/comments/${id}`, {
         headers: { accessToken: localStorage.getItem("accessToken") },
       }).then((response) => {
-        setListOfComments(response.data);
+        setListOfComments(response.data.listOfComments);
+        setLikedComments(response.data.likedComments.map((like) => {
+          return like.CommentId
+        }))
       });
 
       axios.get("http://localhost:3001/posts", {
@@ -113,6 +118,43 @@ function Post() {
         history.push("/");
       });
   };
+
+  const likeAComment = (commentId) => {
+    axios
+      .post(
+        "http://localhost:3001/commentlikes",
+        { CommentId: commentId },
+        { headers: { accessToken: localStorage.getItem("accessToken") } }
+      )
+      .then((response) => {
+        setListOfComments(
+          listOfComments.map((comment) => {
+            if (comment.id === commentId) {
+              if (response.data.liked) {
+                return { ...comment, CommentLikes: [...comment.CommentLikes, 0] };
+              } else {
+                const likesArray = comment.CommentLikes;
+                likesArray.pop();
+                return { ...comment, CommentLikes: likesArray };
+              }
+            } else {
+              return comment;
+            }
+          })
+        );
+
+        if (likedComments.includes(commentId)) {
+          setLikedComments(
+            likedComments.filter((id) => {
+              return id !== commentId;
+            })
+          );
+        } else {
+          setLikedComments([...likedComments, commentId]);
+        }
+      });
+  };
+
 
   const likeAPost = (postId) => {
     axios
@@ -204,21 +246,10 @@ function Post() {
                 <p>
                   {postObject.postText}
                 </p>
-                {/* <footer className="blockquote-footer">
-                  <FavoriteIcon size="lg"
-                    onClick={() => {
-                      likeAPost(postObject.id);
-                    }}
-                    className={
-                      likedPosts.includes(postObject.id) ? "unlikeBttn" : "likeBttn"
-                    }
-                  />
-                </footer> */}
-                <label> {likeNumber}</label>
               </blockquote>
             </Card.Body>
             <Card.Footer className="text-muted">
-              <FavoriteIcon size="lg"
+              <FavoriteIcon
                 onClick={() => {
                   likeAPost(postObject.id);
                 }}
@@ -272,20 +303,20 @@ function Post() {
                     <p>
                       {comment.commentBody}
                     </p>
-                    <footer className="blockquote-footer">
-                      {/* <FavoriteIcon
-                        onClick={() => {
-                          likeAComment(comment.id);
-                        }}
-                        className={
-                          likedComments.includes(comment.id) ? "unlikeBttn" : "likeBttn"
-                        }
-                      /> */}
-                      {/* <label> {value.Likes.length}</label> */}
-
-                    </footer>
                   </blockquote>
                 </Card.Body>
+                <Card.Footer className="text-muted">
+                  
+                <label className="ml-2 mr-2">{comment.CommentLikes.length}</label>
+                  <FavoriteIcon
+                    onClick={() => {
+                      likeAComment(comment.id);
+                    }}
+                    className={
+                      likedComments.includes(comment.id) ? "unlikeBttn" : "likeBttn"
+                    }
+                  />
+                </Card.Footer>
               </Card>
             );
 

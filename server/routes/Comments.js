@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { Comments } = require("../models");
+const { Comments,CommentLikes } = require("../models");
 const { validateToken } = require("../middlewares/AuthMiddleware");
 
 router.get("/:postId", validateToken, async (req, res) => {
   const postId = req.params.postId;
-  const listOfComments = await Comments.findAll({ where: { PostId: postId } });
-  res.json(listOfComments);
+  const listOfComments = await Comments.findAll({ where: { PostId: postId }, include:[CommentLikes] });
+  const likedComments = await CommentLikes.findAll({ where: { UserId: req.user.id } });
+  res.json({ listOfComments: listOfComments, likedComments: likedComments});
 });
 
 router.get("/byId/:id", async (req, res) => {
