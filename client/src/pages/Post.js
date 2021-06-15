@@ -13,13 +13,15 @@ function Post() {
   const [postObject, setPostObject] = useState({});
   const [listOfPosts, setListOfPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
+  const [likeNum,setLikeNum]=useState("");
 
   const [listOfComments, setListOfComments] = useState([]);
   const [likedComments, setLikedComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const { authState } = useContext(AuthContext);
   const [postText, setPostText] = useState("");
-  const [likeNumber, setLikeNumber] = useState("");
+
+  
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -37,10 +39,9 @@ function Post() {
 
         setPostText(response.data.postText)
 
-        setLikeNumber(response.data.Likes.lenght)
+        console.log(response.data)
 
-        console.log(likeNumber)
-
+        setLikeNum(response.data.Likes.length)
       });
 
       axios.get(`http://localhost:3001/comments/${id}`, {
@@ -163,7 +164,7 @@ function Post() {
         { PostId: postId },
         { headers: { accessToken: localStorage.getItem("accessToken") } }
       )
-      .then((response) => {
+      .then((response) => { 
         setListOfPosts(
           listOfPosts.map((post) => {
             if (post.id === postId) {
@@ -186,8 +187,10 @@ function Post() {
               return id !== postId;
             })
           );
+          setLikeNum(likeNum-1)
         } else {
           setLikedPosts([...likedPosts, postId]);
+          setLikeNum(likeNum+1)
         }
       });
   };
@@ -249,6 +252,7 @@ function Post() {
               </blockquote>
             </Card.Body>
             <Card.Footer className="text-muted">
+            <label className="ml-2 mr-2">{likeNum}</label>
               <FavoriteIcon
                 onClick={() => {
                   likeAPost(postObject.id);
@@ -257,7 +261,7 @@ function Post() {
                   likedPosts.includes(postObject.id) ? "unlikeBttn" : "likeBttn"
                 }
               />
-              <label>{likeNumber}</label>
+              
             </Card.Footer>
           </Card>
         </Col>
