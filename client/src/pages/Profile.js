@@ -97,7 +97,7 @@ function Profile() {
                   <cite title="Source Title"><Moment fromNow>{value.createdAt}</Moment>  </cite>
                   <cite className="float-right">
                     {authState.username === value.username && (
-                      <Link>
+                      <Link to={`/editpost/${value.id}`}>
                         Edit
                       </Link>
                     )}

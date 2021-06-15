@@ -100,7 +100,7 @@ function App() {
             <Route path="/" exact component={Home} />
             <Route path="/createpost" exact component={CreatePost} />
             <Route path="/post/:id" exact component={Post} />
-            <Route path="/editpost" exact component={EditPost} />
+            <Route path="/editpost/:id" exact component={EditPost} />
             <Route path="/editcomment/:id" exact component={EditComment} />
             <Route path="/registration" exact component={Registration} />
             <Route path="/login" exact component={Login} />

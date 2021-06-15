@@ -32,8 +32,7 @@ function Home() {
       axios.get("http://localhost:3001/auth").then((response) => {
         setListOfUsers(response.data)
         console.log(response.data)
-      });
-
+      })
     }
     // eslint-disable-next-line
   }, []);
@@ -129,7 +128,7 @@ function Home() {
               return (
                 <ListGroup.Item key={key}>
                   <Link to={`/profile/${value.UserId}`}> {value.name} {value.surname} - {value.username}</Link>
-                  <cite className="float-right">Total comments: {value.Comments.length} </cite> </ListGroup.Item>
+                  <cite className="float-right">Comments: {value.Comments.length} </cite> </ListGroup.Item>
               );
             })}
           </ListGroup>
