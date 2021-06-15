@@ -259,10 +259,12 @@ function Post() {
                   <br></br>
                   <cite><Moment fromNow>{comment.createdAt}</Moment></cite>
                   <cite className="float-right">
+                  {authState.username === comment.username &&
+                      <Link to={`/editcomment/${comment.id}`}>Edit </Link>}
                     {authState.username === comment.username &&
                       <Link onClick={() => {
                         deleteComment(comment.id);
-                      }}>Delete</Link>}
+                      }}> Delete</Link>}
                   </cite>
                 </Card.Header>
                 <Card.Body>
@@ -310,8 +312,6 @@ function Post() {
               <Button onClick={editpost}> Add Comment</Button>
             </Form.Group> */}
           </Form>
-
-          {postText}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

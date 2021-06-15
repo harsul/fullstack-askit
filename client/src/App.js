@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
 import Post from "./pages/Post";
 import EditPost from "./pages/EditPost";
+import EditComment from "./pages/EditComment";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
@@ -100,6 +101,7 @@ function App() {
             <Route path="/createpost" exact component={CreatePost} />
             <Route path="/post/:id" exact component={Post} />
             <Route path="/editpost" exact component={EditPost} />
+            <Route path="/editcomment/:id" exact component={EditComment} />
             <Route path="/registration" exact component={Registration} />
             <Route path="/login" exact component={Login} />
             <Route path="/popularquestions" exact component={PopularQuestions} />

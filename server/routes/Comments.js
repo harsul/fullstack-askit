@@ -9,6 +9,12 @@ router.get("/:postId", validateToken, async (req, res) => {
   res.json(listOfComments);
 });
 
+router.get("/byId/:id", async (req, res) => {
+  const id = req.params.id;
+  const comment = await Comments.findByPk(id);
+  res.json(comment);
+});
+
 router.post("/", validateToken, async (req, res) => {
   const comment = req.body;
   comment.username = req.user.username;
@@ -26,6 +32,12 @@ router.delete("/:commentId", validateToken, async (req, res) => {
     },
   });
   res.json("DELETED SUCCESSFULLY");
+});
+
+router.put("/postcomment", validateToken, async (req, res) => {
+  const { newComment, id } = req.body;
+  await Comments.update({ commentBody: newComment }, { where: { id: id } });
+  res.json(newComment);
 });
 
 module.exports = router;
