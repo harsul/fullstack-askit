@@ -18,10 +18,10 @@ export default function ChangeUsername() {
 
     useEffect(() => {
         axios.get(`http://localhost:3001/posts/byId/${id}`).then((response) => {
-       
-        setNewText(response.data.postText)
-          
-      });
+
+            setNewText(response.data.postText)
+
+        });
         // eslint-disable-next-line
     }, []);
 
@@ -31,8 +31,8 @@ export default function ChangeUsername() {
             .put(
                 "http://localhost:3001/posts/posttext",
                 {
-                    postText:newText,
-                    id:id
+                    postText: newText,
+                    id: id
                 },
                 {
                     headers: {
@@ -64,6 +64,7 @@ export default function ChangeUsername() {
                                 <div className="form-group">
                                     <label htmlFor="name">Edit Post {id}</label>
                                     <Field
+                                        as="textarea" rows={3}
                                         className="form-control"
                                         id="inputName"
                                         name="newcomment"

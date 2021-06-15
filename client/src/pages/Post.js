@@ -32,21 +32,21 @@ function Post() {
     else {
       axios.get(`http://localhost:3001/posts/byId/${id}`).then((response) => {
         setPostObject(response.data);
-  
+
         setPostText(response.data.postText)
 
         setLikeNumber(response.data.Likes.lenght)
 
         console.log(likeNumber)
-  
+
       });
-  
+
       axios.get(`http://localhost:3001/comments/${id}`, {
         headers: { accessToken: localStorage.getItem("accessToken") },
       }).then((response) => {
         setListOfComments(response.data);
       });
-  
+
       axios.get("http://localhost:3001/posts", {
         headers: { accessToken: localStorage.getItem("accessToken") },
       }).then((response) => {
@@ -56,7 +56,7 @@ function Post() {
         }))
       });
     }
-   
+
     // eslint-disable-next-line
   }, []);
 
@@ -188,14 +188,14 @@ function Post() {
               <cite title="Source Title"><Moment fromNow>{postObject.updatedAt}</Moment>  </cite>
               <cite className="float-right">
                 {authState.username === postObject.username && (
-                  <Link onClick={handleShow}>
+                  <Button variant="link" onClick={handleShow}>
                     Edit
-                  </Link>
+                  </Button>
                 )}
                 {authState.username === postObject.username && (
-                  <Link onClick={() => {
+                  <Button variant="link" onClick={() => {
                     deletePost(postObject.id);
-                  }}> Delete</Link>
+                  }}> Delete</Button>
                 )}
               </cite>
             </Card.Header>
@@ -259,12 +259,12 @@ function Post() {
                   <br></br>
                   <cite><Moment fromNow>{comment.createdAt}</Moment></cite>
                   <cite className="float-right">
-                  {authState.username === comment.username &&
-                      <Link to={`/editcomment/${comment.id}`}>Edit </Link>}
                     {authState.username === comment.username &&
-                      <Link onClick={() => {
+                      <Button variant="link" href={`/editcomment/${comment.id}`}>Edit</Button>}
+                    {authState.username === comment.username &&
+                      <Button variant="link" onClick={() => {
                         deleteComment(comment.id);
-                      }}> Delete</Link>}
+                      }}>Delete</Button>}
                   </cite>
                 </Card.Header>
                 <Card.Body>
@@ -301,16 +301,15 @@ function Post() {
           <Form>
             <Form.Group controlId="formBasicPost">
               <Form.Label>Post Text</Form.Label>
-              <Form.Control type="text" placeholder="Edit post"
+              <Form.Control
+                as="textarea" rows={6}
+                placeholder="Edit post"
                 value={postText}
                 onChange={(event) => {
                   setPostText(event.target.value);
                 }}
               />
             </Form.Group>
-            {/* <Form.Group controlId="formBasicSubmit">
-              <Button onClick={editpost}> Add Comment</Button>
-            </Form.Group> */}
           </Form>
         </Modal.Body>
         <Modal.Footer>

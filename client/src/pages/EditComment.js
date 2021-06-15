@@ -30,8 +30,8 @@ export default function ChangeUsername() {
             .put(
                 "http://localhost:3001/comments/postcomment",
                 {
-                    newComment:newComment,
-                    id:id
+                    newComment: newComment,
+                    id: id
                 },
                 {
                     headers: {
@@ -63,6 +63,7 @@ export default function ChangeUsername() {
                                 <div className="form-group">
                                     <label htmlFor="name">Edit Comment {id}</label>
                                     <Field
+                                        as="textarea" rows={3}
                                         className="form-control"
                                         id="inputName"
                                         name="newcomment"

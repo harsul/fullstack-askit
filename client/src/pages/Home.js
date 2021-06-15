@@ -103,17 +103,7 @@ function Home() {
                   </blockquote>
                 </Card.Body>
                 <Card.Footer className="text-muted">
-
                   <label className="ml-2 mr-2"> {value.Likes.length}</label>
-
-                  {/* <Button onClick={() => {
-                    likeAPost(value.id);
-                  }}
-                    size="sm"
-                    variant={
-                      likedPosts.includes(value.id) ? "danger" : "outline-danger"
-                    }>{likedPosts.includes(value.id) ? "Dislike" : "Like"}</Button> */}
-
                   <FavoriteIcon
                     onClick={() => {
                       likeAPost(value.id);
@@ -123,7 +113,6 @@ function Home() {
                     }
                   />
                   <Link className="float-right" to={`/post/${value.id}`}>Read Comments</Link>
-
                 </Card.Footer>
               </Card>
             );
@@ -136,7 +125,7 @@ function Home() {
             {listOfUsers.slice(0, 5).sort((a, b) => b.Comments.length - a.Comments.length).map((value, key) => {
               return (
                 <ListGroup.Item key={key}>
-                  <Link to={`/profile/${value.UserId}`}> {value.name} {value.surname} - {value.username}</Link>
+                  <Link to={`/profile/${value.id}`}> {value.name} {value.surname} - {value.username}</Link>
                   <cite className="float-right">Comments: {value.Comments.length} </cite> </ListGroup.Item>
               );
             })}

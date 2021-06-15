@@ -105,14 +105,11 @@ function Profile() {
                   <cite title="Source Title"><Moment fromNow>{value.createdAt}</Moment>  </cite>
                   <cite className="float-right">
                     {authState.username === value.username && (
-                      <Link to={`/editpost/${value.id}`}>
-                        Edit
-                      </Link>
+                      <Button variant="link" href={`/editpost/${value.id}`}>Edit</Button>
                     )}
                     {authState.username === value.username && (
-                      <Link onClick={() => {
-                        deletePost(value.id);
-                      }}> Delete</Link>
+                      <Button variant="link" onClick={() => {
+                        deletePost(value.id);}}>Delete</Button>
                     )}
                   </cite>
                 </Card.Header>
@@ -142,22 +139,6 @@ function Profile() {
           <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load more</Button>
         </Col>
       </Row>
-
-      {/* <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
-
     </Container>
 
 

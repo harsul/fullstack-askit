@@ -50,7 +50,7 @@ function CreatePost() {
                 <label>Post: </label>
                 <br></br>
                 <ErrorMessage name="postText" component="span" />
-                <Field
+                <Field as="textarea" rows={3}
                   className="form-control"
                   id="inputCreatePost"
                   name="postText"
