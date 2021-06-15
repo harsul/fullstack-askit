@@ -5,12 +5,14 @@ import { Link, useHistory } from "react-router-dom";
 import Moment from 'react-moment';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
-import { Card, Container, Row, Col } from "react-bootstrap"
+import { Card, Container, Row, Col, Button } from "react-bootstrap"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Home() {
   const [listOfPosts, setListOfPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
+
+  const [next, setNext] = useState([]);
 
   let history = useHistory();
 
@@ -26,10 +28,16 @@ function Home() {
         setLikedPosts(response.data.likedPosts.map((like) => {
           return like.PostId
         }))
+
+        setNext(next+5)
       });
     }
     // eslint-disable-next-line
   }, []);
+
+  const handleShowMorePosts = () => {
+    setNext(next + 5);
+  };
 
   const likeAPost = (postId) => {
     axios
@@ -70,9 +78,9 @@ function Home() {
   return (
     <Container className="fluid mt-5">
       <Row>
-        <Col>
+        <Col className="mb-5">
         <h3 className="mb-5">Most popular questions</h3>
-          {listOfPosts.slice(0,5).sort((a, b) => b.Likes.length - a.Likes.length).map((value, key) => {
+          {listOfPosts.slice(0,next).sort((a, b) => b.Likes.length - a.Likes.length).map((value, key) => {
             return (
               <Card key={key} className="mb-3">
                 <Card.Header>
@@ -114,6 +122,7 @@ function Home() {
               </Card>
             );
           })}
+            <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load more</Button>
         </Col>
       </Row>
     </Container>

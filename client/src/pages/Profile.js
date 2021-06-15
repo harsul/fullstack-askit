@@ -6,7 +6,7 @@ import { AuthContext } from "../helpers/AuthContext";
 
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
-import { Container, Row, Col, Card } from "react-bootstrap"
+import { Container, Row, Col, Card, Button } from "react-bootstrap"
 
 function Profile() {
   let { id } = useParams();
@@ -14,6 +14,8 @@ function Profile() {
   const [listOfPosts, setListOfPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
   const { authState } = useContext(AuthContext);
+
+  const [next, setNext] = useState([]);
 
   useEffect(() => {
 
@@ -23,6 +25,8 @@ function Profile() {
     else {
       axios.get(`http://localhost:3001/posts/byuserId/${id}`).then((response) => {
       setListOfPosts(response.data.sort((a, b) => b.createdAt - a.createdAt).reverse());
+
+      setNext(next+5)
     });
 
     axios.get("http://localhost:3001/posts", {
@@ -35,6 +39,10 @@ function Profile() {
     }
     // eslint-disable-next-line
   }, []);
+
+  const handleShowMorePosts = () => {
+    setNext(next + 5);
+  };
 
   const deletePost = (id) => {
     axios
@@ -87,8 +95,8 @@ function Profile() {
     <Container className="mt-5">
       <h3 className="mb-5">Questions</h3>
       <Row>
-        <Col>
-          {listOfPosts.map((value, key) => {
+        <Col className="mb-5">
+          {listOfPosts.slice(0,next).map((value, key) => {
             return (
               <Card key={key} className="mb-3">
                 <Card.Header>
@@ -131,6 +139,7 @@ function Profile() {
               </Card>
             );
           })}
+          <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load more</Button>
         </Col>
       </Row>
 
