@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import Moment from 'react-moment';
@@ -6,14 +6,16 @@ import { AuthContext } from "../helpers/AuthContext";
 
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
-import { Container, Row, Col, Card, Button } from "react-bootstrap"
+import { Container, Row, Col, Card, Button, Jumbotron } from "react-bootstrap"
 
 function Profile() {
   let { id } = useParams();
   let history = useHistory();
   const [listOfPosts, setListOfPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
+
   const { authState } = useContext(AuthContext);
+  const [userBasicInfo, setUserBasicInfo]=useState("");
 
   const [next, setNext] = useState([]);
 
@@ -23,19 +25,23 @@ function Profile() {
       history.push("/login");
     }
     else {
+      axios.get(`http://localhost:3001/auth/basicinfo/${id}`).then((response) => {
+        setUserBasicInfo(response.data);
+      });
+
       axios.get(`http://localhost:3001/posts/byuserId/${id}`).then((response) => {
-      setListOfPosts(response.data.sort((a, b) => b.createdAt - a.createdAt).reverse());
+        setListOfPosts(response.data.sort((a, b) => b.createdAt - a.createdAt).reverse());
 
-      setNext(next+5)
-    });
+        setNext(next + 5)
+      });
 
-    axios.get("http://localhost:3001/posts", {
-      headers: { accessToken: localStorage.getItem("accessToken") },
-    }).then((response) => {
-      setLikedPosts(response.data.likedPosts.map((like) => {
-        return like.PostId
-      }))
-    });
+      axios.get("http://localhost:3001/posts", {
+        headers: { accessToken: localStorage.getItem("accessToken") },
+      }).then((response) => {
+        setLikedPosts(response.data.likedPosts.map((like) => {
+          return like.PostId
+        }))
+      });
     }
     // eslint-disable-next-line
   }, []);
@@ -50,8 +56,11 @@ function Profile() {
         headers: { accessToken: localStorage.getItem("accessToken") },
       })
       .then(() => {
-        // history.push("/");
-        window.location.reload()
+        setListOfPosts(
+          listOfPosts.filter((val) => {
+            return val.id !== id;
+          })
+        );
       });
   };
 
@@ -92,56 +101,66 @@ function Profile() {
   };
 
   return (
-    <Container className="mt-5">
-      <h3 className="mb-5">Questions</h3>
-      <Row>
-        <Col className="mb-5">
-          {listOfPosts.slice(0,next).map((value, key) => {
-            return (
-              <Card key={key} className="mb-3">
-                <Card.Header>
-                  <Link to={`/profile/${value.UserId}`}> {value.username}</Link>
-                  <br></br>
-                  <cite title="Source Title"><Moment fromNow>{value.createdAt}</Moment>  </cite>
-                  <cite className="float-right">
-                    {authState.username === value.username && (
-                      <Button variant="link" href={`/editpost/${value.id}`}>Edit</Button>
-                    )}
-                    {authState.username === value.username && (
-                      <Button variant="link" onClick={() => {
-                        deletePost(value.id);}}>Delete</Button>
-                    )}
-                  </cite>
-                </Card.Header>
-                <Card.Body onClick={()=> history.push(`/post/${value.id}`)}>
-                  <blockquote className="blockquote mb-0">
-                    <p>
-                      {value.postText}
-                    </p>
-                  </blockquote>
-                </Card.Body>
-                <Card.Footer className="text-muted">
-                  <FavoriteIcon size="lg"
-                    onClick={() => {
-                      likeAPost(value.id);
-                    }}
-                    className={
-                      likedPosts.includes(value.id) ? "unlikeBttn" : "likeBttn"
-                    }
-                  />
-                  <Link className="float-right" to={`/post/${value.id}`}>Read Comments</Link>
-                  <label> {value.Likes.length}</label>
-
-                </Card.Footer>
-              </Card>
-            );
-          })}
-          <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load more</Button>
-        </Col>
-      </Row>
-    </Container>
-
-
+    <div>
+      <Jumbotron>
+        <Container className="text-center">
+          <h1>{userBasicInfo.name} {userBasicInfo.surname}</h1>
+          <h2>{authState.username}</h2>
+          <p>
+            This is a place for user information about profile
+          </p>
+        </Container>
+      </Jumbotron>
+      <Container className="mt-1">
+        <h3 className="mb-5">Questions</h3>
+        <Row>
+          <Col className="mb-5">
+            {listOfPosts.slice(0, next).map((value, key) => {
+              return (
+                <Card key={key} className="mb-3">
+                  <Card.Header>
+                    <Link to={`/profile/${value.UserId}`}> {value.username}</Link>
+                    <br></br>
+                    <cite title="Source Title"><Moment fromNow>{value.createdAt}</Moment>  </cite>
+                    <cite className="float-right">
+                      {authState.username === value.username && (
+                        <Button variant="link" size="sm" href={`/editpost/${value.id}`}>Edit</Button>
+                      )}
+                      {authState.username === value.username && (
+                        <Button variant="link" size="sm" onClick={() => {
+                          deletePost(value.id);
+                        }}>Delete</Button>
+                      )}
+                    </cite>
+                  </Card.Header>
+                  <Card.Body onClick={() => history.push(`/post/${value.id}`)}>
+                    <blockquote className="blockquote mb-0">
+                      <p>
+                        {value.postText}
+                      </p>
+                    </blockquote>
+                  </Card.Body>
+                  <Card.Footer className="text-muted">
+                    <label className="mr-2 ml-2"> {value.Likes.length}</label>
+                    <FavoriteIcon
+                      onClick={() => {
+                        likeAPost(value.id);
+                      }}
+                      className={
+                        likedPosts.includes(value.id) ? "unlikeBttn" : "likeBttn"
+                      }
+                    />
+                    <Link className="float-right" to={`/post/${value.id}`}>Read Comments</Link>
+                  </Card.Footer>
+                </Card>
+              );
+            })}
+            
+            <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load more</Button>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 }
 

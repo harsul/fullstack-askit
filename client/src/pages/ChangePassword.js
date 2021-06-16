@@ -11,7 +11,11 @@ function ChangePassword() {
   let history = useHistory()
 
   const changePassword = () => {
-    axios
+    if (!localStorage.getItem("accessToken")) {
+      history.push("/login");
+    }
+    else {
+      axios
       .put(
         "http://localhost:3001/auth/changepassword",
         {
@@ -32,6 +36,8 @@ function ChangePassword() {
           history.goBack()
         }
       });
+    }
+   
   };
 
   return (

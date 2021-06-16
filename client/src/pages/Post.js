@@ -5,15 +5,16 @@ import { AuthContext } from "../helpers/AuthContext";
 import Moment from 'react-moment';
 
 import FavoriteIcon from '@material-ui/icons/Favorite';
-
 import { Card, Container, Row, Col, Button, Form, Modal } from "react-bootstrap"
 
 function Post() {
   let { id } = useParams();
+  let history = useHistory();
+
   const [postObject, setPostObject] = useState({});
   const [listOfPosts, setListOfPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
-  const [likeNum,setLikeNum]=useState("");
+  const [likeNum, setLikeNum] = useState("");
 
   const [listOfComments, setListOfComments] = useState([]);
   const [likedComments, setLikedComments] = useState([]);
@@ -21,13 +22,9 @@ function Post() {
   const { authState } = useContext(AuthContext);
   const [postText, setPostText] = useState("");
 
-  
-
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  let history = useHistory();
 
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
@@ -39,10 +36,9 @@ function Post() {
 
         setPostText(response.data.postText)
 
-        console.log(response.data)
-
         setLikeNum(response.data.Likes.length)
       });
+
 
       axios.get(`http://localhost:3001/comments/${id}`, {
         headers: { accessToken: localStorage.getItem("accessToken") },
@@ -62,7 +58,6 @@ function Post() {
         }))
       });
     }
-
     // eslint-disable-next-line
   }, []);
 
@@ -92,6 +87,7 @@ function Post() {
           };
           setListOfComments([...listOfComments, commentToAdd]);
           setNewComment("");
+          window.location.reload();
         }
       });
   };
@@ -164,7 +160,7 @@ function Post() {
         { PostId: postId },
         { headers: { accessToken: localStorage.getItem("accessToken") } }
       )
-      .then((response) => { 
+      .then((response) => {
         setListOfPosts(
           listOfPosts.map((post) => {
             if (post.id === postId) {
@@ -187,10 +183,10 @@ function Post() {
               return id !== postId;
             })
           );
-          setLikeNum(likeNum-1)
+          setLikeNum(likeNum - 1)
         } else {
           setLikedPosts([...likedPosts, postId]);
-          setLikeNum(likeNum+1)
+          setLikeNum(likeNum + 1)
         }
       });
   };
@@ -215,149 +211,152 @@ function Post() {
           alert(response.data.error);
         }
         else {
+          axios.get(`http://localhost:3001/posts/byId/${id}`).then((response) => {
+            setPostObject(response.data);
+          });
           console.log("Suceess")
           handleClose()
-          window.location.reload();
         }
       });
   };
 
   return (
-    <Container>
-      <Row>
-        <Col>
-          <Card className="mt-5">
-            <Card.Header>
-              <Link to={`/profile/${postObject.UserId}`}> {postObject.username}</Link>
-              <br></br>
-              <cite title="Source Title"><Moment fromNow>{postObject.updatedAt}</Moment>  </cite>
-              <cite className="float-right">
-                {authState.username === postObject.username && (
-                  <Button variant="link" onClick={handleShow}>
-                    Edit
-                  </Button>
-                )}
-                {authState.username === postObject.username && (
-                  <Button variant="link" onClick={() => {
-                    deletePost(postObject.id);
-                  }}> Delete</Button>
-                )}
-              </cite>
-            </Card.Header>
-            <Card.Body>
-              <blockquote className="blockquote mb-0">
-                <p>
-                  {postObject.postText}
-                </p>
-              </blockquote>
-            </Card.Body>
-            <Card.Footer className="text-muted">
-            <label className="ml-2 mr-2">{likeNum}</label>
-              <FavoriteIcon
-                onClick={() => {
-                  likeAPost(postObject.id);
-                }}
-                className={
-                  likedPosts.includes(postObject.id) ? "unlikeBttn" : "likeBttn"
-                }
-              />
-              
-            </Card.Footer>
-          </Card>
-        </Col>
+    <div>
+      <Container className="mb-5">
+        <Row>
+          <Col>
+            <Card className="mt-5">
+              <Card.Header >
+                <Link to={`/profile/${postObject.UserId}`}> {postObject.username}</Link>
+                <br></br>
+                <cite title="Source Title"><Moment fromNow>{postObject.updatedAt}</Moment>  </cite>
+                <cite className="float-right">
+                  {authState.username === postObject.username && (
+                    <Button variant="link" size="sm"
+                      onClick={handleShow}>Edit</Button>
+                  )}
+                  {authState.username === postObject.username && (
+                    <Button variant="link" size="sm" onClick={() => {
+                      deletePost(postObject.id);
+                    }}> Delete</Button>
+                  )}
+                </cite>
+              </Card.Header>
+              <Card.Body>
+                <blockquote className="blockquote mb-0">
+                  <p>
+                    {postObject.postText}
+                  </p>
+                </blockquote>
+              </Card.Body>
+              <Card.Footer className="text-muted">
+                <label className="ml-2 mr-2">{likeNum}</label>
+                <FavoriteIcon
+                  onClick={() => {
+                    likeAPost(postObject.id);
+                  }}
+                  className={
+                    likedPosts.includes(postObject.id) ? "unlikeBttn" : "likeBttn"
+                  }
+                />
 
-      </Row>
-      <Row>
-        <Col xs={2}></Col>
-        <Col>
-          <Form>
-            <Form.Group controlId="formBasicComment">
-              <Form.Label>Comment</Form.Label>
-              <Form.Control type="text" placeholder="Enter comment"
-                value={newComment}
-                onChange={(event) => {
-                  setNewComment(event.target.value);
-                }}
-              />
-            </Form.Group>
-            <Form.Group controlId="formBasicSubmit">
-              <Button onClick={addComment}> Add Comment</Button>
-            </Form.Group>
-          </Form>
-          <hr></hr>
-          {listOfComments.map((comment, key) => {
-            return (
-              <Card key={key} className="mb-3">
-                <Card.Header>
-                  <cite title="Source Title"><Link to={`/profile/${comment.UserId}`}>{comment.username}</Link>
-                  </cite>
-                  <br></br>
-                  <cite><Moment fromNow>{comment.createdAt}</Moment></cite>
-                  <cite className="float-right">
-                    {authState.username === comment.username &&
-                      <Button variant="link" href={`/editcomment/${comment.id}`}>Edit</Button>}
-                    {authState.username === comment.username &&
-                      <Button variant="link" onClick={() => {
-                        deleteComment(comment.id);
-                      }}>Delete</Button>}
-                  </cite>
-                </Card.Header>
-                <Card.Body>
-                  <blockquote className="blockquote mb-0">
-                    <p>
-                      {comment.commentBody}
-                    </p>
-                  </blockquote>
-                </Card.Body>
-                <Card.Footer className="text-muted">
-                  
-                <label className="ml-2 mr-2">{comment.CommentLikes.length}</label>
-                  <FavoriteIcon
-                    onClick={() => {
-                      likeAComment(comment.id);
-                    }}
-                    className={
-                      likedComments.includes(comment.id) ? "unlikeBttn" : "likeBttn"
-                    }
-                  />
-                </Card.Footer>
-              </Card>
-            );
+              </Card.Footer>
+            </Card>
+          </Col>
 
-          })}
-        </Col>
-      </Row>
+        </Row>
+        <Row>
+          <Col xs={2}></Col>
+          <Col>
+            <Form>
+              <Form.Group controlId="formBasicComment">
+                <Form.Label>Comment</Form.Label>
+                <Form.Control type="text" placeholder="Enter comment"
+                  value={newComment}
+                  onChange={(event) => {
+                    setNewComment(event.target.value);
+                  }}
+                />
+              </Form.Group>
+              <Form.Group controlId="formBasicSubmit">
+                <Button onClick={addComment}> Add Comment</Button>
+              </Form.Group>
+            </Form>
+            <hr></hr>
+            {listOfComments.map((comment, key) => {
+              return (
+                <Card key={key} className="mb-3">
+                  <Card.Header >
+                    <cite title="Source Title"><Link to={`/profile/${comment.UserId}`}>{comment.username}</Link>
+                    </cite>
+                    <br></br>
+                    <cite><Moment fromNow>{comment.createdAt}</Moment></cite>
+                    <cite className="float-right">
+                      {authState.username === comment.username &&
+                        <Button variant="link" size="sm" href={`/editcomment/${comment.id}`}>Edit</Button>}
+                      {authState.username === comment.username &&
+                        <Button variant="link" size="sm" onClick={() => {
+                          deleteComment(comment.id);
+                        }}>Delete</Button>}
+                    </cite>
+                  </Card.Header>
+                  <Card.Body>
+                    <blockquote className="blockquote mb-0">
+                      <p>
+                        {comment.commentBody}
+                      </p>
+                    </blockquote>
+                  </Card.Body>
+                  <Card.Footer className="text-muted">
+                    {typeof comment.CommentLikes != "undefined" ? <label className="ml-2 mr-2">{comment.CommentLikes.length}</label> : "0"}
+                    <FavoriteIcon
+                      onClick={() => {
+                        likeAComment(comment.id);
+                      }}
+                      className={
+                        likedComments.includes(comment.id) ? "unlikeBttn" : "likeBttn"
+                      }
+                    />
+                  </Card.Footer>
+                </Card>
+              );
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Post</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="formBasicPost">
-              <Form.Label>Post Text</Form.Label>
-              <Form.Control
-                as="textarea" rows={6}
-                placeholder="Edit post"
-                value={postText}
-                onChange={(event) => {
-                  setPostText(event.target.value);
-                }}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={editpost}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+            })}
+          </Col>
+        </Row>
 
-    </Container>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit Post</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group controlId="formBasicPost">
+                <Form.Label>Post Text</Form.Label>
+                <Form.Control
+                  as="textarea" rows={6}
+                  placeholder="Edit post"
+                  value={postText}
+                  onChange={(event) => {
+                    setPostText(event.target.value);
+                  }}
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={editpost}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+      </Container>
+    </div>
+
   );
 }
 

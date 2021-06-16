@@ -21,12 +21,19 @@ export default function ChangeUsername() {
     };
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/auth/basicinfo/${id}`).then((response) => {
+        if (!localStorage.getItem("accessToken")) {
+            history.push("/login");
+        }
+        else {
+            axios.get(`http://localhost:3001/auth/basicinfo/${id}`).then((response) => {
 
-            setName(response.data.name)
-            setSurname(response.data.surname)
-            setUsername(response.data.username)
-        });
+                setName(response.data.name)
+                setSurname(response.data.surname)
+                setUsername(response.data.username)
+            });
+
+        }
+
         // eslint-disable-next-line
     }, []);
 

@@ -74,7 +74,7 @@ function App() {
                     <Nav.Link href="/popularquestions">Popular Questions</Nav.Link>
                     <Nav.Link href="/createpost">Ask Question</Nav.Link>
                   </>
-                ) : (<Nav.Link href="/">Home Page</Nav.Link>)}
+                ) : (<Nav.Link>The best platform for your questions</Nav.Link>)}
               </Nav>
               <Nav>
                 {authState.status &&

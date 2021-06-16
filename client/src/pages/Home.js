@@ -117,7 +117,8 @@ function Home() {
               </Card>
             );
           })}
-           <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load more</Button>
+          <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load more</Button>
+           
         </Col>
         <Col xs="6">
           <h3 className="mb-5">Most active users</h3>
@@ -149,17 +150,7 @@ function Home() {
                   </blockquote>
                 </Card.Body>
                 <Card.Footer className="text-muted">
-
                   <label className="ml-2 mr-2"> {value.Likes.length}</label>
-
-                  {/* <Button onClick={() => {
-                    likeAPost(value.id);
-                  }}
-                    size="sm"
-                    variant={
-                      likedPosts.includes(value.id) ? "danger" : "outline-danger"
-                    }>{likedPosts.includes(value.id) ? "Dislike" : "Like"}</Button> */}
-
                   <FavoriteIcon
                     onClick={() => {
                       likeAPost(value.id);
@@ -169,13 +160,11 @@ function Home() {
                     }
                   />
                   <Link className="float-right" to={`/post/${value.id}`}>Read Comments</Link>
-
                 </Card.Footer>
               </Card>
             );
           })}
           <hr></hr>
-
         </Col>
       </Row>
     </Container>
