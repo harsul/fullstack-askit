@@ -17,7 +17,7 @@ function Profile() {
   const { authState } = useContext(AuthContext);
   const [userBasicInfo, setUserBasicInfo]=useState("");
 
-  const [next, setNext] = useState([]);
+  const [next, setNext] = useState(0);
 
   useEffect(() => {
 
@@ -32,7 +32,7 @@ function Profile() {
       axios.get(`http://localhost:3001/posts/byuserId/${id}`).then((response) => {
         setListOfPosts(response.data.sort((a, b) => b.createdAt - a.createdAt).reverse());
 
-        setNext(next + 5)
+        setNext(next + 10)
       });
 
       axios.get("http://localhost:3001/posts", {
@@ -47,7 +47,7 @@ function Profile() {
   }, []);
 
   const handleShowMorePosts = () => {
-    setNext(next + 5);
+    setNext(next + 10);
   };
 
   const deletePost = (id) => {
@@ -155,8 +155,10 @@ function Profile() {
                 </Card>
               );
             })}
-            
-            <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load more</Button>
+            {next-10<listOfPosts.length ? 
+            <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load More</Button>
+            : <p className="float-right">End of list</p>}
+            {/* <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load more</Button> */}
           </Col>
         </Row>
       </Container>

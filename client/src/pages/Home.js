@@ -12,7 +12,7 @@ function Home() {
   const [listOfPosts, setListOfPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
   const [listOfUsers, setListOfUsers] = useState([]);
-  const [next, setNext] = useState([]);
+  const [next, setNext] = useState(0);
 
   let history = useHistory();
 
@@ -29,7 +29,7 @@ function Home() {
           return like.PostId
         }))
 
-        setNext(next + 5);
+        setNext(next + 20);
       });
 
       axios.get("http://localhost:3001/auth").then((response) => {
@@ -41,7 +41,7 @@ function Home() {
   }, []);
 
   const handleShowMorePosts = () => {
-    setNext(next + 5);
+    setNext(next + 10);
   };
 
 
@@ -117,7 +117,10 @@ function Home() {
               </Card>
             );
           })}
-           <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load more</Button>
+          {next-10<listOfPosts.length ? 
+          <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load More</Button>
+        :<p className="float-right">End of list</p>}
+           
         </Col>
         <Col xs="6">
           <h3 className="mb-5">Most active users</h3>

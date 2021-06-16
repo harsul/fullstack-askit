@@ -12,7 +12,7 @@ function Home() {
   const [listOfPosts, setListOfPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
 
-  const [next, setNext] = useState([]);
+  const [next, setNext] = useState(0);
 
   let history = useHistory();
 
@@ -29,14 +29,14 @@ function Home() {
           return like.PostId
         }))
 
-        setNext(next+5)
+        setNext(next+10)
       });
     }
     // eslint-disable-next-line
   }, []);
 
   const handleShowMorePosts = () => {
-    setNext(next + 5);
+    setNext(next + 10);
   };
 
   const likeAPost = (postId) => {
@@ -112,7 +112,9 @@ function Home() {
               </Card>
             );
           })}
-            <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load more</Button>
+            {next-10<listOfPosts.length ? 
+            <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load More</Button>
+            : <p className="float-right">End of list</p>}
         </Col>
       </Row>
     </Container>

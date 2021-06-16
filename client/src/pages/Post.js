@@ -23,6 +23,7 @@ function Post() {
 
   const [postText, setPostText] = useState("");
   const [postUserId, setPostUserId] = useState("");
+  
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
