@@ -11,6 +11,7 @@ import Profile from "./pages/Profile";
 import PopularQuestions from "./pages/PopularQuestions";
 import ChangePassword from "./pages/ChangePassword";
 import ChangeUsername from "./pages/ChangeUsername";
+import Notifications from "./pages/Notifications";
 // import { useHistory } from "react-router-dom";
 
 import PageNotFound from "./pages/PageNotFound";
@@ -59,7 +60,7 @@ function App() {
   };
 
   return (
-    <div >
+    <div className="font">
       <AuthContext.Provider value={{ authState, setAuthState }}>
         <Router>
           <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" >
@@ -79,9 +80,9 @@ function App() {
               <Nav>
                 {authState.status &&
                   <NavDropdown title="My Profile" id="collasible-nav-dropdown">
-                    
-                    <NavDropdown.Item href={`/profile/${authState.id}`}>Notifications</NavDropdown.Item>
+                    <NavDropdown.Item href={`/notifications/${authState.id}`}>Notifications</NavDropdown.Item>
                     <NavDropdown.Item href={`/profile/${authState.id}`}>My Questions</NavDropdown.Item>
+                    
                     <NavDropdown.Divider />
                     <NavDropdown.Item href={`/changeusername/${authState.id}`}>Edit Profile</NavDropdown.Item>
                     <NavDropdown.Item href={`/changepassword`}>Change Password</NavDropdown.Item>
@@ -106,6 +107,7 @@ function App() {
             <Route path="/login" exact component={Login} />
             <Route path="/popularquestions" exact component={PopularQuestions} />
             <Route path="/profile/:id" exact component={Profile} />
+            <Route path="/notifications/:id" exact component={Notifications} />
             <Route path="/changepassword" exact component={ChangePassword} />
             <Route path="/changeusername/:id" exact component={ChangeUsername} />
             <Route path="/*" exact component={PageNotFound} />

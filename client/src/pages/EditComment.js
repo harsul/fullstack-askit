@@ -63,7 +63,7 @@ export default function ChangeUsername() {
                                 <div className="form-group">
                                     <label htmlFor="name">Edit Comment {id}</label>
                                     <Field
-                                        as="textarea" rows={3}
+                                        as="textarea" rows={5}
                                         className="form-control"
                                         id="inputName"
                                         name="newcomment"

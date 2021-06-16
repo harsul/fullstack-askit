@@ -20,8 +20,9 @@ function Post() {
   const [likedComments, setLikedComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const { authState } = useContext(AuthContext);
-  const [postText, setPostText] = useState("");
 
+  const [postText, setPostText] = useState("");
+  const [postUserId, setPostUserId] = useState("");
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -35,6 +36,7 @@ function Post() {
         setPostObject(response.data);
 
         setPostText(response.data.postText)
+        setPostUserId(response.data.UserId)
 
         setLikeNum(response.data.Likes.length)
       });
@@ -88,6 +90,28 @@ function Post() {
           setListOfComments([...listOfComments, commentToAdd]);
           setNewComment("");
           window.location.reload();
+        }
+      });
+
+    axios
+      .post(
+        "http://localhost:3001/notifications",
+        {
+          postId: id,
+          postUserId: postUserId,
+          read:"0"
+        },
+        {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.error) {
+          console.log(response.data.error);
+        } else {
+          console.log("Success")
         }
       });
   };
@@ -334,7 +358,7 @@ function Post() {
               <Form.Group controlId="formBasicPost">
                 <Form.Label>Post Text</Form.Label>
                 <Form.Control
-                  as="textarea" rows={6}
+                  as="textarea" rows={5}
                   placeholder="Edit post"
                   value={postText}
                   onChange={(event) => {

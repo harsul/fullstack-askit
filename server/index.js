@@ -18,6 +18,8 @@ const likesRouter = require("./routes/Likes");
 app.use("/likes", likesRouter);
 const commentlikesRouter = require("./routes/Commentlikes");
 app.use("/commentlikes", commentlikesRouter);
+const NotificationRouter = require("./routes/Notifications");
+app.use("/notifications", NotificationRouter);
 
 db.sequelize.sync().then(() => {
   app.listen(3001, () => {

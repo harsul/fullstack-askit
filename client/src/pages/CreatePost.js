@@ -7,12 +7,11 @@ import { useHistory } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 function CreatePost() {
 
   let history = useHistory();
   const initialValues = {
-    postText: "",
+  postText: "",
   };
 
   useEffect(() => {
@@ -27,7 +26,6 @@ function CreatePost() {
   });
 
   const onSubmit = (data) => {
-
     axios.post("http://localhost:3001/posts", data,
       { headers: { accessToken: localStorage.getItem("accessToken") } }).then((response) => {
         history.push("/");
@@ -35,7 +33,6 @@ function CreatePost() {
   };
 
   return (
-
     <Container className="mt-5">
       <h3 className="mb-5">Ask Question</h3>
       <Row>
@@ -50,7 +47,7 @@ function CreatePost() {
                 <label>Post: </label>
                 <br></br>
                 <ErrorMessage name="postText" component="span" />
-                <Field as="textarea" rows={3}
+                <Field as="textarea" rows={5}
                   className="form-control"
                   id="inputCreatePost"
                   name="postText"

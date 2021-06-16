@@ -80,7 +80,7 @@ function Home() {
       <Row>
         <Col className="mb-5">
         <h3 className="mb-5">Most popular questions</h3>
-          {listOfPosts.slice(0,next).sort((a, b) => b.Likes.length - a.Likes.length).map((value, key) => {
+          {listOfPosts.sort((a, b) => b.Likes.length - a.Likes.length).slice(0,next).map((value, key) => {
             return (
               <Card key={key} className="mb-3">
                 <Card.Header>
@@ -97,17 +97,7 @@ function Home() {
                   </blockquote>
                 </Card.Body>
                 <Card.Footer className="text-muted">
-
                   <label className="ml-2 mr-2"> {value.Likes.length}</label>
-
-                  {/* <Button onClick={() => {
-                    likeAPost(value.id);
-                  }}
-                    size="sm"
-                    variant={
-                      likedPosts.includes(value.id) ? "danger" : "outline-danger"
-                    }>{likedPosts.includes(value.id) ? "Dislike" : "Like"}</Button> */}
-
                   <FavoriteIcon 
                         onClick={() => {
                           likeAPost(value.id);
