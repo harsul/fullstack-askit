@@ -57,7 +57,7 @@ function Login() {
                 }} />
             </Form.Group>
             <Form.Group controlId="formBasicSubmit" className="text-center">
-              <Button onClick={login} variant="primary">
+              <Button onClick={login} variant="primary" className="round-button">
                 Submit
               </Button>
               <hr></hr>

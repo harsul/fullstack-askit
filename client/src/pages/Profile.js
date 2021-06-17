@@ -6,7 +6,7 @@ import { AuthContext } from "../helpers/AuthContext";
 
 import FavoriteIcon from '@material-ui/icons/Favorite';
 
-import { Container, Row, Col, Card, Button, Jumbotron } from "react-bootstrap"
+import { Container, Row, Col, Card, Button, Jumbotron, Dropdown, DropdownButton } from "react-bootstrap"
 
 function Profile() {
   let { id } = useParams();
@@ -15,7 +15,7 @@ function Profile() {
   const [likedPosts, setLikedPosts] = useState([]);
 
   const { authState } = useContext(AuthContext);
-  const [userBasicInfo, setUserBasicInfo]=useState("");
+  const [userBasicInfo, setUserBasicInfo] = useState("");
 
   const [next, setNext] = useState(0);
 
@@ -124,12 +124,12 @@ function Profile() {
                     <cite title="Source Title"><Moment fromNow>{value.createdAt}</Moment>  </cite>
                     <cite className="float-right">
                       {authState.username === value.username && (
-                        <Button variant="link" size="sm" href={`/editpost/${value.id}`}>Edit</Button>
-                      )}
-                      {authState.username === value.username && (
-                        <Button variant="link" size="sm" onClick={() => {
-                          deletePost(value.id);
-                        }}>Delete</Button>
+                        <DropdownButton size="sm" id="dropdown-basic-button" title="Options">
+                          <Dropdown.Item href={`/editpost/${value.id}`}>Edit</Dropdown.Item>
+                          <Dropdown.Item onClick={() => {
+                            deletePost(value.id);
+                          }}>Delete</Dropdown.Item>
+                        </DropdownButton>
                       )}
                     </cite>
                   </Card.Header>
@@ -155,10 +155,9 @@ function Profile() {
                 </Card>
               );
             })}
-            {next-10<listOfPosts.length ? 
-            <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load More</Button>
-            : <p className="float-right">End of list</p>}
-            {/* <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load more</Button> */}
+            {next - 10 < listOfPosts.length ?
+              <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load More</Button>
+              : <p className="float-right">End of list</p>}
           </Col>
         </Row>
       </Container>

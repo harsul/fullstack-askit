@@ -63,7 +63,7 @@ function App() {
     <div className="font">
       <AuthContext.Provider value={{ authState, setAuthState }}>
         <Router>
-          <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" >
+          <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark" >
             <Container>
             <Navbar.Brand href="/">ASK IT</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -71,15 +71,15 @@ function App() {
               <Nav className="mr-auto">
                 {authState.status ? (
                   <>
-                    <Nav.Link href="/">Home Page</Nav.Link>
-                    <Nav.Link href="/popularquestions">Popular Questions</Nav.Link>
-                    <Nav.Link href="/createpost">Ask Question</Nav.Link>
+                    <Nav.Link className="text-white" href="/">Home Page</Nav.Link>
+                    <Nav.Link className="text-white" href="/popularquestions">Popular Questions</Nav.Link>
+                    <Nav.Link className="text-white" href="/createpost">Ask Question</Nav.Link>
                   </>
                 ) : (<Nav.Link>The best platform for your questions</Nav.Link>)}
               </Nav>
               <Nav>
                 {authState.status &&
-                  <NavDropdown title="My Profile" id="collasible-nav-dropdown">
+                  <NavDropdown className="text-white" title="My Profile" id="collasible-nav-dropdown">
                     <NavDropdown.Item href={`/notifications/${authState.id}`}>Notifications</NavDropdown.Item>
                     <NavDropdown.Item href={`/profile/${authState.id}`}>My Questions</NavDropdown.Item>
                     

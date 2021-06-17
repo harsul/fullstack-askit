@@ -5,7 +5,7 @@ import { AuthContext } from "../helpers/AuthContext";
 import Moment from 'react-moment';
 
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import { Card, Container, Row, Col, Button, Form, Modal } from "react-bootstrap"
+import { Card, Container, Row, Col, Button, Form, Modal, DropdownButton, Dropdown } from "react-bootstrap"
 
 function Post() {
   let { id } = useParams();
@@ -23,7 +23,7 @@ function Post() {
 
   const [postText, setPostText] = useState("");
   const [postUserId, setPostUserId] = useState("");
-  
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -100,7 +100,7 @@ function Post() {
         {
           PostId: id,
           UserId: postUserId,
-          read:"0"
+          read: "0"
         },
         {
           headers: {
@@ -257,13 +257,12 @@ function Post() {
                 <cite title="Source Title"><Moment fromNow>{postObject.updatedAt}</Moment>  </cite>
                 <cite className="float-right">
                   {authState.username === postObject.username && (
-                    <Button variant="link" size="sm"
-                      onClick={handleShow}>Edit</Button>
-                  )}
-                  {authState.username === postObject.username && (
-                    <Button variant="link" size="sm" onClick={() => {
-                      deletePost(postObject.id);
-                    }}> Delete</Button>
+                    <DropdownButton size="sm" id="dropdown-basic-button" title="Options">
+                      <Dropdown.Item onClick={handleShow}>Edit</Dropdown.Item>
+                      <Dropdown.Item onClick={() => {
+                        deletePost(postObject.id);
+                      }}>Delete</Dropdown.Item>
+                    </DropdownButton>
                   )}
                 </cite>
               </Card.Header>
@@ -317,12 +316,14 @@ function Post() {
                     <br></br>
                     <cite><Moment fromNow>{comment.createdAt}</Moment></cite>
                     <cite className="float-right">
-                      {authState.username === comment.username &&
-                        <Button variant="link" size="sm" href={`/editcomment/${comment.id}`}>Edit</Button>}
-                      {authState.username === comment.username &&
-                        <Button variant="link" size="sm" onClick={() => {
-                          deleteComment(comment.id);
-                        }}>Delete</Button>}
+                      {authState.username === comment.username && (
+                        <DropdownButton size="sm" id="dropdown-basic-button" title="Options">
+                          <Dropdown.Item href={`/editcomment/${comment.id}`}>Edit</Dropdown.Item>
+                          <Dropdown.Item onClick={() => {
+                            deleteComment(comment.id);
+                          }}>Delete</Dropdown.Item>
+                        </DropdownButton>
+                      )}
                     </cite>
                   </Card.Header>
                   <Card.Body>

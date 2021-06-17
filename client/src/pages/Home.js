@@ -1,14 +1,18 @@
 import React from "react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext} from "react";
 import { Link, useHistory } from "react-router-dom";
 import Moment from 'react-moment';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import { AuthContext } from "../helpers/AuthContext";
 
-import { Card, Container, Row, Col, ListGroup, Button } from "react-bootstrap"
+import { Card, Container, Row, Col, ListGroup, Button, Dropdown, DropdownButton } from "react-bootstrap"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+
 function Home() {
+
+  const { authState } = useContext(AuthContext);
   const [listOfPosts, setListOfPosts] = useState([]);
   const [listOfBestPosts, setListOfBestPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
@@ -85,6 +89,20 @@ function Home() {
       });
   };
 
+  const deletePost = (id) => {
+    axios
+      .delete(`http://localhost:3001/posts/${id}`, {
+        headers: { accessToken: localStorage.getItem("accessToken") },
+      })
+      .then(() => {
+        setListOfPosts(
+          listOfPosts.filter((val) => {
+            return val.id !== id;
+          })
+        );
+      });
+  };
+
   return (
     <Container className="fluid mt-5">
       <Row>
@@ -97,6 +115,17 @@ function Home() {
                   <Link to={`/profile/${value.UserId}`}> {value.username}</Link>
                   <br></br>
                   <cite title="Source Title"><Moment fromNow>{value.updatedAt}</Moment>
+                  </cite>
+                  <cite className="float-right">
+                  {authState.username === value.username && (
+                        <DropdownButton size="sm" id="dropdown-basic-button" title="Options">
+                          <Dropdown.Item href={`/editpost/${value.id}`}>Edit</Dropdown.Item>
+                          <Dropdown.Item onClick={() => {
+                            deletePost(value.id);
+                          }}>Delete</Dropdown.Item>
+                        </DropdownButton>
+                      )}
+
                   </cite>
                 </Card.Header>
                 <Card.Body onClick={() => history.push(`/post/${value.id}`)}>
