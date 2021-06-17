@@ -2,9 +2,8 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
-import Post from "./pages/Post";
+import Post from "./pages/post";
 import EditPost from "./pages/EditPost";
-import EditComment from "./pages/EditComment";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
@@ -34,7 +33,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/auth/auth", {
+      .get(process.env.REACT_APP_HTTP_API + "/auth/auth", {
         headers: {
           accessToken: localStorage.getItem("accessToken"),
         },
@@ -102,7 +101,6 @@ function App() {
             <Route path="/createpost" exact component={CreatePost} />
             <Route path="/post/:id" exact component={Post} />
             <Route path="/editpost/:id" exact component={EditPost} />
-            <Route path="/editcomment/:id" exact component={EditComment} />
             <Route path="/registration" exact component={Registration} />
             <Route path="/login" exact component={Login} />
             <Route path="/popularquestions" exact component={PopularQuestions} />

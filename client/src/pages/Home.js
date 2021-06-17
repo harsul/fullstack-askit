@@ -26,7 +26,7 @@ function Home() {
       history.push("/login");
     }
     else {
-      axios.get("http://localhost:3001/posts", {
+      axios.get(process.env.REACT_APP_HTTP_API + "/posts", {
         headers: { accessToken: localStorage.getItem("accessToken") },
       }).then((response) => {
         setListOfPosts(response.data.listOfPosts.sort((a, b) => b.createdAt - a.createdAt).reverse());
@@ -38,7 +38,7 @@ function Home() {
         setNext(next + 20);
       });
 
-      axios.get("http://localhost:3001/auth").then((response) => {
+      axios.get(process.env.REACT_APP_HTTP_API + "/auth").then((response) => {
         setListOfUsers(response.data)
         console.log(response.data)
       })
@@ -54,7 +54,7 @@ function Home() {
   const likeAPost = (postId) => {
     axios
       .post(
-        "http://localhost:3001/likes",
+        process.env.REACT_APP_HTTP_API + "/likes",
         { PostId: postId },
         { headers: { accessToken: localStorage.getItem("accessToken") } }
       )
@@ -117,7 +117,7 @@ function Home() {
                   <cite title="Source Title"><Moment fromNow>{value.updatedAt}</Moment>
                   </cite>
                   <cite className="float-right">
-                  {authState.username === value.username && (
+                  {authState.id === value.UserId && (
                         <DropdownButton size="sm" id="dropdown-basic-button" title="Options">
                           <Dropdown.Item href={`/editpost/${value.id}`}>Edit</Dropdown.Item>
                           <Dropdown.Item onClick={() => {

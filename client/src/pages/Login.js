@@ -16,7 +16,7 @@ function Login() {
 
   const login = () => {
     const data = { username: username, password: password };
-    axios.post("http://localhost:3001/auth/login", data).then((response) => {
+    axios.post(process.env.REACT_APP_HTTP_API + "/auth/login", data).then((response) => {
 
       if (response.data.error) {
         alert(response.data.error)

@@ -29,7 +29,7 @@ export default function ChangeUsername() {
     const onSubmit = (data) => {
         axios
             .put(
-                "http://localhost:3001/posts/posttext",
+                process.env.REACT_APP_HTTP_API + "/posts/posttext",
                 {
                     postText: newText,
                     id: id

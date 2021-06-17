@@ -5,7 +5,7 @@ const { Posts, Likes } = require("../models");
 const { validateToken } = require("../middlewares/AuthMiddleware");
 
 router.get("/", validateToken, async (req, res) => {
-  const listOfPosts = await Posts.findAll({ include: [Likes] });
+  const listOfPosts = await Posts.findAll({ include: [Likes]});
   const listOfBestPosts = await Posts.findAll({ include: [Likes] });
   const likedPosts = await Likes.findAll({ where: { UserId: req.user.id } });
   res.json({ listOfPosts: listOfPosts, likedPosts: likedPosts,listOfBestPosts:listOfBestPosts});
@@ -38,6 +38,12 @@ router.put("/posttext", validateToken, async (req, res) => {
   const { postText, id } = req.body;
   await Posts.update({ postText: postText }, { where: { id: id } });
   res.json(postText);
+});
+
+router.put("/username", validateToken, async (req, res) => {
+  const { username, id } = req.body;
+  await Posts.update({ username: username }, { where: { UserId: id } });
+  res.json(username);
 });
 
 router.delete("/:postId", validateToken, async (req, res) => {

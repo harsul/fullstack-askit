@@ -35,7 +35,7 @@ function Profile() {
         setNext(next + 10)
       });
 
-      axios.get("http://localhost:3001/posts", {
+      axios.get(process.env.REACT_APP_HTTP_API + "/posts", {
         headers: { accessToken: localStorage.getItem("accessToken") },
       }).then((response) => {
         setLikedPosts(response.data.likedPosts.map((like) => {
@@ -67,7 +67,7 @@ function Profile() {
   const likeAPost = (postId) => {
     axios
       .post(
-        "http://localhost:3001/likes",
+        process.env.REACT_APP_HTTP_API + "/likes",
         { PostId: postId },
         { headers: { accessToken: localStorage.getItem("accessToken") } }
       )
@@ -123,7 +123,7 @@ function Profile() {
                     <br></br>
                     <cite title="Source Title"><Moment fromNow>{value.createdAt}</Moment>  </cite>
                     <cite className="float-right">
-                      {authState.username === value.username && (
+                      {authState.id === value.UserId && (
                         <DropdownButton size="sm" id="dropdown-basic-button" title="Options">
                           <Dropdown.Item href={`/editpost/${value.id}`}>Edit</Dropdown.Item>
                           <Dropdown.Item onClick={() => {
