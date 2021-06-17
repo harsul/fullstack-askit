@@ -17,7 +17,7 @@ export default function ChangeUsername() {
     };
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/posts/byId/${id}`).then((response) => {
+        axios.get(process.env.REACT_APP_HTTP_API + `posts/byId/${id}`).then((response) => {
 
             setNewText(response.data.postText)
 

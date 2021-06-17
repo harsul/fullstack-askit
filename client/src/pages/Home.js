@@ -91,7 +91,7 @@ function Home() {
 
   const deletePost = (id) => {
     axios
-      .delete(`http://localhost:3001/posts/${id}`, {
+      .delete(process.env.REACT_APP_HTTP_API + `posts/${id}`, {
         headers: { accessToken: localStorage.getItem("accessToken") },
       })
       .then(() => {

@@ -25,7 +25,7 @@ export default function ChangeUsername() {
             history.push("/login");
         }
         else {
-            axios.get(`http://localhost:3001/auth/basicinfo/${id}`).then((response) => {
+            axios.get(process.env.REACT_APP_HTTP_API + `auth/basicinfo/${id}`).then((response) => {
 
                 setName(response.data.name)
                 setSurname(response.data.surname)
@@ -42,7 +42,7 @@ export default function ChangeUsername() {
         console.log(name, surname, username)
         axios
             .put(
-                "http://localhost:3001/auth/changeusername",
+                process.env.REACT_APP_HTTP_API + "/auth/changeusername",
                 {
                     name: name,
                     surname: surname,
