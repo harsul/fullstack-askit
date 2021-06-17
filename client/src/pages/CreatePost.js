@@ -26,7 +26,7 @@ function CreatePost() {
   });
 
   const onSubmit = (data) => {
-    axios.post("http://localhost:3001/posts", data,
+    axios.post("https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/posts", data,
       { headers: { accessToken: localStorage.getItem("accessToken") } }).then((response) => {
         history.push("/");
       });

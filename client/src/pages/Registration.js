@@ -23,7 +23,7 @@ function Registration() {
   });
 
   const onSubmit = (data) => {
-    axios.post("http://localhost:3001/auth", data).then(() => {
+    axios.post("https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/auth", data).then(() => {
       console.log(data);
       history.push("/")
     });

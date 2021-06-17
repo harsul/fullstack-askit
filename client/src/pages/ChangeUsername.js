@@ -25,7 +25,7 @@ export default function ChangeUsername() {
             history.push("/login");
         }
         else {
-            axios.get(`http://localhost:3001/auth/basicinfo/${id}`).then((response) => {
+            axios.get(`https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/auth/basicinfo/${id}`).then((response) => {
 
                 setName(response.data.name)
                 setSurname(response.data.surname)
@@ -42,7 +42,7 @@ export default function ChangeUsername() {
         console.log(name, surname, username)
         axios
             .put(
-                "http://localhost:3001/auth/changeusername",
+                "https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/auth/changeusername",
                 {
                     name: name,
                     surname: surname,

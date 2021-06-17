@@ -91,7 +91,7 @@ function Home() {
 
   const deletePost = (id) => {
     axios
-      .delete(`http://localhost:3001/posts/${id}`, {
+      .delete(`https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/posts/${id}`, {
         headers: { accessToken: localStorage.getItem("accessToken") },
       })
       .then(() => {

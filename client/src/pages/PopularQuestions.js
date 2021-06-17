@@ -24,7 +24,7 @@ function Home() {
       history.push("/login");
     }
     else {
-      axios.get("http://localhost:3001/posts", {
+      axios.get("https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/posts", {
         headers: { accessToken: localStorage.getItem("accessToken") },
       }).then((response) => {
         setListOfPosts(response.data.listOfPosts.sort((a, b) => b.createdAt - a.createdAt).reverse());
@@ -45,7 +45,7 @@ function Home() {
   const likeAPost = (postId) => {
     axios
       .post(
-        "http://localhost:3001/likes",
+        "https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/likes",
         { PostId: postId },
         { headers: { accessToken: localStorage.getItem("accessToken") } }
       )
@@ -80,7 +80,7 @@ function Home() {
 
   const deletePost = (id) => {
     axios
-      .delete(`http://localhost:3001/posts/${id}`, {
+      .delete(`https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/posts/${id}`, {
         headers: { accessToken: localStorage.getItem("accessToken") },
       })
       .then(() => {

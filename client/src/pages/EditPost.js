@@ -17,7 +17,7 @@ export default function ChangeUsername() {
     };
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/posts/byId/${id}`).then((response) => {
+        axios.get(`https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/posts/byId/${id}`).then((response) => {
 
             setNewText(response.data.postText)
 
@@ -29,7 +29,7 @@ export default function ChangeUsername() {
     const onSubmit = (data) => {
         axios
             .put(
-                "http://localhost:3001/posts/posttext",
+                "https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/posts/posttext",
                 {
                     postText: newText,
                     id: id

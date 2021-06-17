@@ -16,7 +16,7 @@ function Login() {
 
   const login = () => {
     const data = { username: username, password: password };
-    axios.post("http://localhost:3001/auth/login", data).then((response) => {
+    axios.post("https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/auth/login", data).then((response) => {
 
       if (response.data.error) {
         alert(response.data.error)

@@ -22,7 +22,7 @@ export default function Notifications() {
         }
         else {
             console.log(id)
-            axios.get(`http://localhost:3001/notifications/byuser/${id}`, {
+            axios.get(`https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/notifications/byuser/${id}`, {
                 headers: { accessToken: localStorage.getItem("accessToken") },
             }).then((response) => {
                 setListOfNotifications(response.data.sort((a, b) => b.createdAt - a.createdAt).reverse());

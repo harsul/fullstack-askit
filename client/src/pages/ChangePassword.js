@@ -17,7 +17,7 @@ function ChangePassword() {
     else {
       axios
       .put(
-        "http://localhost:3001/auth/changepassword",
+        "https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/changepassword",
         {
           oldPassword: oldPassword,
           newPassword: newPassword,
