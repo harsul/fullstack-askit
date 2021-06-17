@@ -34,6 +34,10 @@ module.exports = (sequelize, DataTypes) => {
     Users.hasMany(models.CommentLikes, {
       onDelete: "cascade",
     });
+
+    Users.hasMany(models.Notifications, {
+      onDelete: "cascade",
+    });
   };
 
   return Users;

@@ -19,7 +19,7 @@ router.post("/", validateToken, async (req, res) => {
 
   router.get("/byuser/:id", validateToken, async (req, res) => {
     const id = req.params.id;
-    const listofNotifications = await Notifications.findAll({where:{postUserId:id}})
+    const listofNotifications = await Notifications.findAll({where:{UserId:id}})
     res.json(listofNotifications);
   });
 

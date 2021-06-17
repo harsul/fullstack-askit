@@ -98,8 +98,8 @@ function Post() {
       .post(
         "http://localhost:3001/notifications",
         {
-          postId: id,
-          postUserId: postUserId,
+          PostId: id,
+          UserId: postUserId,
           read:"0"
         },
         {

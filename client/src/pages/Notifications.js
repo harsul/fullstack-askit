@@ -48,7 +48,7 @@ export default function Notifications() {
                                 <Alert variant="primary">
                                     You have new comments from
                                     <Alert.Link href={`/profile/${value.commentUserId}`}> {value.commentUsername}</Alert.Link> on your
-                                    <Alert.Link href={`/post/${value.postId}`}> post</Alert.Link>. Give it a click if you like.
+                                    <Alert.Link href={`/post/${value.PostId}`}> post</Alert.Link>. Give it a click if you like.
                                     <cite className="float-right"><Moment fromNow>{value.createdAt}</Moment></cite>
                                 </Alert>
                             );
