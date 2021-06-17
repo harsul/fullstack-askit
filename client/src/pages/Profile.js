@@ -25,13 +25,12 @@ function Profile() {
       history.push("/login");
     }
     else {
-      axios.get(process.env.REACT_APP_HTTP_API + `auth/basicinfo/${id}`).then((response) => {
+      axios.get(`http://localhost:3001/auth/basicinfo/${id}`).then((response) => {
         setUserBasicInfo(response.data);
       });
 
-      axios.get(process.env.REACT_APP_HTTP_API + `posts/byuserId/${id}`).then((response) => {
+      axios.get(`http://localhost:3001/posts/byuserId/${id}`).then((response) => {
         setListOfPosts(response.data.sort((a, b) => b.createdAt - a.createdAt).reverse());
-
         setNext(next + 10)
       });
 
@@ -52,7 +51,7 @@ function Profile() {
 
   const deletePost = (id) => {
     axios
-      .delete(process.env.REACT_APP_HTTP_API + `posts/${id}`, {
+      .delete(`http://localhost:3001/posts/${id}`, {
         headers: { accessToken: localStorage.getItem("accessToken") },
       })
       .then(() => {

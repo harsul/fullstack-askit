@@ -80,7 +80,7 @@ function Home() {
 
   const deletePost = (id) => {
     axios
-      .delete(process.env.REACT_APP_HTTP_API + `posts/${id}`, {
+      .delete(`http://localhost:3001/posts/${id}`, {
         headers: { accessToken: localStorage.getItem("accessToken") },
       })
       .then(() => {

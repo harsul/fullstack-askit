@@ -10,17 +10,16 @@ export default function ChangeUsername() {
     let history = useHistory()
     let { id } = useParams();
     //const [postObject, setPostObject] = useState([]);
-    const [newText, setNewText] = useState("");
+    const [newComment, setNewComment] = useState("");
 
     const initialValues = {
-        newText: "",
+        newComment: "",
     };
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/posts/byId/${id}`).then((response) => {
+        axios.get(`http://localhost:3001/comments/byId/${id}`).then((response) => {
 
-            setNewText(response.data.postText)
-
+            setNewComment(response.data.commentBody)
         });
         // eslint-disable-next-line
     }, []);
@@ -29,9 +28,9 @@ export default function ChangeUsername() {
     const onSubmit = (data) => {
         axios
             .put(
-                process.env.REACT_APP_HTTP_API + "/posts/posttext",
+                process.env.REACT_APP_HTTP_API + "/comments/postcomment",
                 {
-                    postText: newText,
+                    newComment: newComment,
                     id: id
                 },
                 {
@@ -62,15 +61,15 @@ export default function ChangeUsername() {
                         >
                             <Form>
                                 <div className="form-group">
-                                    <label htmlFor="name">Edit Post {id}</label>
+                                    <label htmlFor="name">Edit Comment {id}</label>
                                     <Field
-                                        as="textarea" rows={3}
+                                        as="textarea" rows={5}
                                         className="form-control"
                                         id="inputName"
                                         name="newcomment"
                                         placeholder="Enter name..."
-                                        value={newText}
-                                        onChange={(e) => setNewText(e.target.value)}
+                                        value={newComment}
+                                        onChange={(e) => setNewComment(e.target.value)}
                                     />
                                 </div>
                                 <div className="form-group text-center">
