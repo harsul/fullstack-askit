@@ -25,17 +25,17 @@ function Profile() {
       history.push("/login");
     }
     else {
-      axios.get(`https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/auth/basicinfo/${id}`).then((response) => {
+      axios.get(`http://localhost:3001/auth/basicinfo/${id}`).then((response) => {
         setUserBasicInfo(response.data);
       });
 
-      axios.get(`https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/posts/byuserId/${id}`).then((response) => {
+      axios.get(`http://localhost:3001/posts/byuserId/${id}`).then((response) => {
         setListOfPosts(response.data.sort((a, b) => b.createdAt - a.createdAt).reverse());
 
         setNext(next + 10)
       });
 
-      axios.get("https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/posts", {
+      axios.get("http://localhost:3001/posts", {
         headers: { accessToken: localStorage.getItem("accessToken") },
       }).then((response) => {
         setLikedPosts(response.data.likedPosts.map((like) => {
@@ -52,7 +52,7 @@ function Profile() {
 
   const deletePost = (id) => {
     axios
-      .delete(`https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/posts/${id}`, {
+      .delete(`http://localhost:3001/posts/${id}`, {
         headers: { accessToken: localStorage.getItem("accessToken") },
       })
       .then(() => {
@@ -67,7 +67,7 @@ function Profile() {
   const likeAPost = (postId) => {
     axios
       .post(
-        "https://60cb26f67087dbc3e7961a46--pensive-hawking-5c5191.netlify.app/likes",
+        "http://localhost:3001/likes",
         { PostId: postId },
         { headers: { accessToken: localStorage.getItem("accessToken") } }
       )
