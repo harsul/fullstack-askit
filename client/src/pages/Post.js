@@ -227,6 +227,7 @@ function Post() {
         },
         {
           headers: {
+            "Access-Control-Allow-Origin": "*",
             accessToken: localStorage.getItem("accessToken"),
           },
         }

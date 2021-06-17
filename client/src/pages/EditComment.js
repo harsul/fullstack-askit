@@ -28,7 +28,7 @@ export default function ChangeUsername() {
     const onSubmit = (data) => {
         axios
             .put(
-                "http://localhost:3001/postcomment",
+                "http://localhost:3001/comments/postcomment",
                 {
                     newComment: newComment,
                     id: id

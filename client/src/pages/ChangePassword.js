@@ -17,7 +17,7 @@ function ChangePassword() {
     else {
       axios
       .put(
-        "http://localhost:3001/changepassword",
+        "http://localhost:3001/auth/changepassword",
         {
           oldPassword: oldPassword,
           newPassword: newPassword,
