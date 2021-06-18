@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, Link, useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
-import Moment from 'react-moment';
 import { AuthContext } from "../helpers/AuthContext";
 
-import FavoriteIcon from '@material-ui/icons/Favorite';
+//import FavoriteIcon from '@material-ui/icons/Favorite';
 
-import { Container, Row, Col, Card, Button, Jumbotron, Dropdown, DropdownButton } from "react-bootstrap"
+import { Container, Row, Col, Button, Jumbotron } from "react-bootstrap"
+
+import PostClass from "./PostClass";
 
 function Profile() {
   let { id } = useParams();
@@ -17,86 +18,37 @@ function Profile() {
   const { authState } = useContext(AuthContext);
   const [userBasicInfo, setUserBasicInfo] = useState("");
 
-  const [next, setNext] = useState(0);
+  const [next, setNext] = useState(5);
 
   useEffect(() => {
 
     if (!localStorage.getItem("accessToken")) {
       history.push("/login");
     }
+
     else {
       axios.get(`http://localhost:3001/auth/basicinfo/${id}`).then((response) => {
         setUserBasicInfo(response.data);
       });
 
-      axios.get(`http://localhost:3001/posts/byuserId/${id}`).then((response) => {
-        setListOfPosts(response.data.sort((a, b) => b.createdAt - a.createdAt).reverse());
-        setNext(next + 10)
-      });
-
-      axios.get(process.env.REACT_APP_HTTP_API + "/posts", {
-        headers: { accessToken: localStorage.getItem("accessToken") },
-      }).then((response) => {
-        setLikedPosts(response.data.likedPosts.map((like) => {
-          return like.PostId
-        }))
-      });
+      getPosts()
     }
     // eslint-disable-next-line
   }, []);
 
+  const getPosts = () => {
+    axios.get(`http://localhost:3001/posts/byuserId/${id}`, {
+      headers: { accessToken: localStorage.getItem("accessToken") },
+    }).then((response) => {
+      setListOfPosts(response.data.listOfPosts.sort((a, b) => b.createdAt - a.createdAt).reverse());
+      setLikedPosts(response.data.likedPosts.map((like) => {
+        return like.postId
+      }))
+    });
+  }
+
   const handleShowMorePosts = () => {
     setNext(next + 10);
-  };
-
-  const handleDeletePost = (id) => {
-    axios
-      .delete(`http://localhost:3001/posts/${id}`, {
-        headers: { accessToken: localStorage.getItem("accessToken") },
-      })
-      .then(() => {
-        setListOfPosts(
-          listOfPosts.filter((val) => {
-            return val.id !== id;
-          })
-        );
-      });
-  };
-
-  const handleLikeAPost = (postId) => {
-    axios
-      .post(
-        process.env.REACT_APP_HTTP_API + "/likes",
-        { PostId: postId },
-        { headers: { accessToken: localStorage.getItem("accessToken") } }
-      )
-      .then((response) => {
-        setListOfPosts(
-          listOfPosts.map((post) => {
-            if (post.id === postId) {
-              if (response.data.liked) {
-                return { ...post, Likes: [...post.Likes, 0] };
-              } else {
-                const likesArray = post.Likes;
-                likesArray.pop();
-                return { ...post, Likes: likesArray };
-              }
-            } else {
-              return post;
-            }
-          })
-        );
-
-        if (likedPosts.includes(postId)) {
-          setLikedPosts(
-            likedPosts.filter((id) => {
-              return id !== postId;
-            })
-          );
-        } else {
-          setLikedPosts([...likedPosts, postId]);
-        }
-      });
   };
 
   return (
@@ -114,46 +66,15 @@ function Profile() {
         <h3 className="mb-5">Questions</h3>
         <Row>
           <Col className="mb-5">
-            {listOfPosts.slice(0, next).map((value, key) => {
-              return (
-                <Card key={key} className="mb-3">
-                  <Card.Header>
-                    <Link to={`/profile/${value.UserId}`}> {value.username}</Link>
-                    <br></br>
-                    <cite title="Source Title"><Moment fromNow>{value.createdAt}</Moment>  </cite>
-                    <cite className="float-right">
-                      {authState.id === value.UserId && (
-                        <DropdownButton size="sm" id="dropdown-basic-button" title="Options">
-                          <Dropdown.Item href={`/editpost/${value.id}`}>Edit</Dropdown.Item>
-                          <Dropdown.Item onClick={() => {
-                            handleDeletePost(value.id);
-                          }}>Delete</Dropdown.Item>
-                        </DropdownButton>
-                      )}
-                    </cite>
-                  </Card.Header>
-                  <Card.Body onClick={() => history.push(`/post/${value.id}`)}>
-                    <blockquote className="blockquote mb-0">
-                      <p>
-                        {value.postText}
-                      </p>
-                    </blockquote>
-                  </Card.Body>
-                  <Card.Footer className="text-muted">
-                    <label className="mr-2 ml-2"> {value.Likes.length}</label>
-                    <FavoriteIcon
-                      onClick={() => {
-                        handleLikeAPost(value.id);
-                      }}
-                      className={
-                        likedPosts.includes(value.id) ? "unlikeBttn" : "likeBttn"
-                      }
-                    />
-                    <Link className="float-right" to={`/post/${value.id}`}>Read Comments</Link>
-                  </Card.Footer>
-                </Card>
-              );
-            })}
+          {listOfPosts.slice(0,next).map((post, key) => (
+              <PostClass
+                key={key}
+                post={post}
+                authState={authState}
+                isLiked={likedPosts.includes(post.id)}
+                refresh={getPosts}
+              />
+            ))}
             {next - 10 < listOfPosts.length ?
               <Button className="float-right" variant="primary" onClick={handleShowMorePosts}>Load More</Button>
               : <p className="float-right">End of list</p>}

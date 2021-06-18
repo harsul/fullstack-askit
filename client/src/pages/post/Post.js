@@ -40,7 +40,6 @@ function Post() {
 
         setPostText(response.data.postText)
         setPostUserId(response.data.UserId)
-
         setLikeNum(response.data.Likes.length)
       });
 
