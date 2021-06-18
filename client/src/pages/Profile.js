@@ -104,7 +104,7 @@ function Profile() {
       <Jumbotron>
         <Container className="text-center">
           <h1>{userBasicInfo.name} {userBasicInfo.surname}</h1>
-          <h2>{authState.username}</h2>
+          <h2>{userBasicInfo.username}</h2>
           <p>
             This is a place for user information about profile
           </p>
