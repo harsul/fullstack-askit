@@ -96,7 +96,7 @@ export default function PostClass({ post, authState, isLiked, refresh }) {
                                     onChange={(e) => setPostText(e.target.value)} />
                                 <div className="form-group text-center">
                                     <br />
-                                    <Button type="submit" className="btn btn-primary" disabled={!postText.length}>Update</Button>
+                                    <Button size="sm" type="submit" className="btn btn-primary" disabled={!postText.length}>Update</Button>
                                 </div>
                             </Form>
                         </Formik>

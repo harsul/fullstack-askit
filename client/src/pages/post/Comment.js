@@ -88,7 +88,7 @@ export default function Comment({ comment, authState, isLiked, refresh }) {
                                     onChange={(e) => setCommentBody(e.target.value)} />
                                 <div className="form-group text-center">
                                     <br />
-                                    <Button type="submit" className="btn btn-primary" disabled={!commentBody.length}>Update</Button>
+                                    <Button size="sm" type="submit" variant="primary" disabled={!commentBody.length}>Update</Button>
                                 </div>
                             </Form>
                         </Formik>
