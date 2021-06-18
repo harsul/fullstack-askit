@@ -10,7 +10,7 @@ function ChangePassword() {
 
   let history = useHistory()
 
-  const changePassword = () => {
+  const handleChangePassword = () => {
     if (!localStorage.getItem("accessToken")) {
       history.push("/login");
     }
@@ -63,7 +63,7 @@ function ChangePassword() {
                 }} />
             </Form.Group>
             <Form.Group controlId="formBasicSubmit" className="text-center">
-              <Button onClick={changePassword}> Save Changes</Button>
+              <Button onClick={handleChangePassword}> Save Changes</Button>
             </Form.Group>
           </Form>
         </Col>

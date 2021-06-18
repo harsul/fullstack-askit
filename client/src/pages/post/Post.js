@@ -69,7 +69,7 @@ function Post() {
     });
   }
 
-  const addComment = () => {
+  const handleAddComment = () => {
     axios
       .post(
         process.env.REACT_APP_HTTP_API + "/comments",
@@ -116,7 +116,7 @@ function Post() {
       });
   };
 
-  const deletePost = (id) => {
+  const handleDeletePost = (id) => {
     axios
       .delete(`http://localhost:3001/posts/${id}`, {
         headers: { accessToken: localStorage.getItem("accessToken") },
@@ -164,8 +164,7 @@ function Post() {
       });
   };
 
-  const editpost = (data) => {
-    console.log(postText)
+  const handleEditpost = (data) => {
     axios
       .put(
         process.env.REACT_APP_HTTP_API + "/posts/posttext",
@@ -203,13 +202,13 @@ function Post() {
               <Card.Header >
                 <Link to={`/profile/${postObject.UserId}`}> {postObject.username}</Link>
                 <br></br>
-                <cite title="Source Title"><Moment fromNow>{postObject.updatedAt}</Moment>  </cite>
+                <cite title="Source Title"><Moment fromNow>{postObject.createdAt}</Moment>  </cite>
                 <cite className="float-right">
                   {authState.id === postObject.UserId && (
                     <DropdownButton size="sm" id="dropdown-basic-button" title="Options">
                       <Dropdown.Item onClick={handleShow}>Edit</Dropdown.Item>
                       <Dropdown.Item onClick={() => {
-                        deletePost(postObject.id);
+                        handleDeletePost(postObject.id);
                       }}>Delete</Dropdown.Item>
                     </DropdownButton>
                   )}
@@ -251,7 +250,7 @@ function Post() {
                 />
               </Form.Group>
               <Form.Group controlId="formBasicSubmit">
-                <Button onClick={addComment}> Add Comment</Button>
+                <Button onClick={handleAddComment}> Add Comment</Button>
               </Form.Group>
             </Form>
             <hr />
@@ -290,7 +289,7 @@ function Post() {
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" onClick={editpost}>
+            <Button variant="primary" onClick={handleEditpost}>
               Save Changes
             </Button>
           </Modal.Footer>

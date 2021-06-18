@@ -33,17 +33,18 @@ export default function ChangeUsername() {
             });
 
         }
-
         // eslint-disable-next-line
     }, []);
 
 
-    const onSubmit = (data) => {
-        console.log(name, surname, username)
+    const handleOnSubmit = (data) => {
+
+        console.log(name,surname,username)
         axios
             .put(
                 process.env.REACT_APP_HTTP_API + "/auth/changeusername",
                 {
+                    id:id,
                     name: name,
                     surname: surname,
                     username: username
@@ -58,8 +59,54 @@ export default function ChangeUsername() {
                 if (response.data.error) {
                     alert(response.data.error);
                 }
+                console.log("success")
+                // else {
+                //     history.goBack()
+                // }
+            });
+
+            axios
+            .put(
+                process.env.REACT_APP_HTTP_API + "/posts/username",
+                {
+                    username: username,
+                    id: id
+                },
+                {
+                    headers: {
+                        accessToken: localStorage.getItem("accessToken"),
+                    },
+                }
+            )
+            .then((response) => {
+                if (response.data.error) {
+                    alert(response.data.error);
+                }
                 else {
-                    history.goBack()
+                    console.log("Success")
+                }
+            });
+
+            axios
+            .put(
+                process.env.REACT_APP_HTTP_API + "/notifications/username",
+                {
+                    username: username,
+                    id: id
+                },
+                {
+                    headers: {
+                        accessToken: localStorage.getItem("accessToken"),
+                    },
+                }
+            )
+            .then((response) => {
+                if (response.data.error) {
+                    alert(response.data.error);
+                }
+                else {
+                    console.log("Success")
+                    // history.goBack()
                 }
             });
     };
@@ -72,7 +119,7 @@ export default function ChangeUsername() {
                     <Col xs={4}>
                         <Formik
                             initialValues={initialValues}
-                            onSubmit={onSubmit}>
+                            onSubmit={handleOnSubmit}>
                             <Form>
                                 <div className="form-group">
                                     <label htmlFor="name">Name</label>

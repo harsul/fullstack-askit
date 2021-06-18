@@ -26,7 +26,7 @@ export default function ChangeUsername() {
     }, []);
 
 
-    const onSubmit = (data) => {
+    const handleOnSubmit = (data) => {
         axios
             .put(
                 process.env.REACT_APP_HTTP_API + "/posts/posttext",
@@ -58,7 +58,7 @@ export default function ChangeUsername() {
                     <Col xs={6}>
                         <Formik
                             initialValues={initialValues}
-                            onSubmit={onSubmit}
+                            onSubmit={handleOnSubmit}
                         >
                             <Form>
                                 <div className="form-group">

@@ -52,7 +52,7 @@ function App() {
     // eslint-disable-next-line
   }, []);
 
-  const logout = () => {
+  const handleLogout = () => {
     localStorage.removeItem("accessToken");
     setAuthState({ username: "", id: 0, status: false });
     window.location.reload();
@@ -86,7 +86,7 @@ function App() {
                     <NavDropdown.Item href={`/changeusername/${authState.id}`}>Edit Profile</NavDropdown.Item>
                     <NavDropdown.Item href={`/changepassword`}>Change Password</NavDropdown.Item>
                     <NavDropdown.Divider />
-                    <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+                    <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
                   </NavDropdown>
                 }
               </Nav>

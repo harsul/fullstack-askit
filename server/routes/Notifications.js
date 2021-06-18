@@ -28,6 +28,12 @@ router.post("/", validateToken, async (req, res) => {
     await Posts.update({ read: "1" }, { where: { id: id } });
     res.json(id);
   });
+
+  router.put("/username", validateToken, async (req, res) => {
+    const { username, id } = req.body;
+    await Notifications.update({ commentUsername: username }, { where: { commentUserId: id } });
+    res.json(username);
+  });
   
 
 module.exports = router;

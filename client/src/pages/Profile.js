@@ -49,7 +49,7 @@ function Profile() {
     setNext(next + 10);
   };
 
-  const deletePost = (id) => {
+  const handleDeletePost = (id) => {
     axios
       .delete(`http://localhost:3001/posts/${id}`, {
         headers: { accessToken: localStorage.getItem("accessToken") },
@@ -63,7 +63,7 @@ function Profile() {
       });
   };
 
-  const likeAPost = (postId) => {
+  const handleLikeAPost = (postId) => {
     axios
       .post(
         process.env.REACT_APP_HTTP_API + "/likes",
@@ -126,7 +126,7 @@ function Profile() {
                         <DropdownButton size="sm" id="dropdown-basic-button" title="Options">
                           <Dropdown.Item href={`/editpost/${value.id}`}>Edit</Dropdown.Item>
                           <Dropdown.Item onClick={() => {
-                            deletePost(value.id);
+                            handleDeletePost(value.id);
                           }}>Delete</Dropdown.Item>
                         </DropdownButton>
                       )}
@@ -143,7 +143,7 @@ function Profile() {
                     <label className="mr-2 ml-2"> {value.Likes.length}</label>
                     <FavoriteIcon
                       onClick={() => {
-                        likeAPost(value.id);
+                        handleLikeAPost(value.id);
                       }}
                       className={
                         likedPosts.includes(value.id) ? "unlikeBttn" : "likeBttn"

@@ -14,7 +14,7 @@ function Login() {
 
   let history = useHistory()
 
-  const login = () => {
+  const handleLogin = () => {
     const data = { username: username, password: password };
     axios.post(process.env.REACT_APP_HTTP_API + "/auth/login", data).then((response) => {
 
@@ -57,7 +57,7 @@ function Login() {
                 }} />
             </Form.Group>
             <Form.Group controlId="formBasicSubmit" className="text-center">
-              <Button onClick={login} variant="primary" className="round-button">
+              <Button onClick={handleLogin} variant="primary" className="round-button">
                 Submit
               </Button>
               <hr></hr>

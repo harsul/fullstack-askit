@@ -73,7 +73,7 @@ router.put("/changepassword", validateToken, async (req, res) => {
 });
 
 router.put("/changeusername", validateToken, async (req, res) => {
-  const { name, surname, username } = req.body
+  const { id, name, surname, username } = req.body
 
   Users.update(
     {
@@ -81,7 +81,7 @@ router.put("/changeusername", validateToken, async (req, res) => {
       surname: surname,
       username: username
     },
-    { where: { username: req.user.username } }
+    { where: { id: id } }
   );
   res.json("Success");
 

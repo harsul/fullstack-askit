@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useHistory, Link } from "react-router-dom"
 
-import { Container,Row,Col, Button } from "react-bootstrap"
+import { Container, Row, Col, Button } from "react-bootstrap"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Registration() {
@@ -22,7 +22,7 @@ function Registration() {
     password: Yup.string().min(5).required('Required'),
   });
 
-  const onSubmit = (data) => {
+  const handleOnSubmit = (data) => {
     axios.post(process.env.REACT_APP_HTTP_API + "/auth", data).then(() => {
       console.log(data);
       history.push("/")
@@ -37,7 +37,7 @@ function Registration() {
         <Col xs={4}>
           <Formik
             initialValues={initialValues}
-            onSubmit={onSubmit}
+            onSubmit={handleOnSubmit}
             validationSchema={validationSchema}>
             <Form>
               <div className="form-group">
