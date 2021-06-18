@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { useEffect, useState, useContext} from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Moment from 'react-moment';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -38,7 +38,9 @@ function Home() {
         setNext(next + 20);
       });
 
-      axios.get(process.env.REACT_APP_HTTP_API + "/auth").then((response) => {
+      axios.get(process.env.REACT_APP_HTTP_API + "/auth", {
+        headers: { accessToken: localStorage.getItem("accessToken") },
+      }).then((response) => {
         setListOfUsers(response.data)
         console.log(response.data)
       })
@@ -117,14 +119,14 @@ function Home() {
                   <cite title="Source Title"><Moment fromNow>{value.updatedAt}</Moment>
                   </cite>
                   <cite className="float-right">
-                  {authState.id === value.UserId && (
-                        <DropdownButton size="sm" id="dropdown-basic-button" title="Options">
-                          <Dropdown.Item href={`/editpost/${value.id}`}>Edit</Dropdown.Item>
-                          <Dropdown.Item onClick={() => {
-                            handleDeletePost(value.id);
-                          }}>Delete</Dropdown.Item>
-                        </DropdownButton>
-                      )}
+                    {authState.id === value.UserId && (
+                      <DropdownButton size="sm" id="dropdown-basic-button" title="Options">
+                        <Dropdown.Item href={`/editpost/${value.id}`}>Edit</Dropdown.Item>
+                        <Dropdown.Item onClick={() => {
+                          handleDeletePost(value.id);
+                        }}>Delete</Dropdown.Item>
+                      </DropdownButton>
+                    )}
 
                   </cite>
                 </Card.Header>
@@ -156,8 +158,8 @@ function Home() {
 
         </Col>
         <Col xs="6">
-        <h3 className="mb-5">Best Questions</h3>
-        <ListGroup>
+          <h3 className="mb-5">Best Questions</h3>
+          <ListGroup>
             {listOfBestPosts.sort((a, b) => b.Likes.length - a.Likes.length).slice(0, 10).map((value, key) => {
               return (
                 <ListGroup.Item key={key} onClick={() => history.push(`/post/${value.id}`)}>
@@ -179,7 +181,7 @@ function Home() {
             })}
           </ListGroup>
           <hr></hr>
-          
+
           {/* {listOfBestPosts.slice(0, 5).map((value, key) => {
             return (
               <Card key={key} className="mb-3">

@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
   });
 });
 
-router.get("/", async (req, res) => {
+router.get("/", validateToken, async (req, res) => {
   const listOfUsers = await Users.findAll({ include: [Comments] });
   res.json(listOfUsers);
 });
