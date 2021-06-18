@@ -12,7 +12,7 @@ export default function Comment({ comment, authState, isLiked, refresh }) {
 
     const handleDeleteComment = () => {
         axios
-            .delete(`http://localhost:3001/comments/${comment.id}`, {
+            .delete(`${process.env.REACT_APP_HTTP_API}/comments/${comment.id}`, {
                 headers: { accessToken: localStorage.getItem("accessToken") },
             })
             .then(() => {

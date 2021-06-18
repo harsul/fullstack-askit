@@ -35,7 +35,7 @@ function Post() {
       history.push("/login");
     }
     else {
-      axios.get(`http://localhost:3001/posts/byId/${id}`).then((response) => {
+      axios.get(`${process.env.REACT_APP_HTTP_API}/posts/byId/${id}`).then((response) => {
         setPostObject(response.data);
 
         setPostText(response.data.postText)
@@ -58,7 +58,7 @@ function Post() {
   }, []);
 
   const getPostComment = () => {
-    axios.get(`http://localhost:3001/comments/${id}`, {
+    axios.get(`${process.env.REACT_APP_HTTP_API}/comments/${id}`, {
       headers: { accessToken: localStorage.getItem("accessToken") },
     }).then((response) => {
       setListOfComments(response.data.listOfComments);
@@ -117,7 +117,7 @@ function Post() {
 
   const handleDeletePost = (id) => {
     axios
-      .delete(`http://localhost:3001/posts/${id}`, {
+      .delete(`${process.env.REACT_APP_HTTP_API}/posts/${id}`, {
         headers: { accessToken: localStorage.getItem("accessToken") },
       })
       .then(() => {
@@ -183,7 +183,7 @@ function Post() {
           alert(response.data.error);
         }
         else {
-          axios.get(`http://localhost:3001/posts/byId/${id}`).then((response) => {
+          axios.get(`${process.env.REACT_APP_HTTP_API}/posts/byId/${id}`).then((response) => {
             setPostObject(response.data);
           });
           console.log("Suceess")

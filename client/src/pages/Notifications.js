@@ -22,7 +22,7 @@ export default function Notifications() {
         }
         else {
             console.log(id)
-            axios.get(`http://localhost:3001/notifications/byuser/${id}`, {
+            axios.get(`${process.env.REACT_APP_HTTP_API}/notifications/byuser/${id}`, {
                 headers: { accessToken: localStorage.getItem("accessToken") },
             }).then((response) => {
                 setListOfNotifications(response.data.sort((a, b) => b.createdAt - a.createdAt).reverse());

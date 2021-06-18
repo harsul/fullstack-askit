@@ -27,7 +27,7 @@ function Profile() {
     }
 
     else {
-      axios.get(`http://localhost:3001/auth/basicinfo/${id}`).then((response) => {
+      axios.get(`${process.env.REACT_APP_HTTP_API}/auth/basicinfo/${id}`).then((response) => {
         setUserBasicInfo(response.data);
       });
 
@@ -37,12 +37,12 @@ function Profile() {
   }, []);
 
   const getPosts = () => {
-    axios.get(`http://localhost:3001/posts/byuserId/${id}`, {
+    axios.get(`${process.env.REACT_APP_HTTP_API}/posts/byuserId/${id}`, {
       headers: { accessToken: localStorage.getItem("accessToken") },
     }).then((response) => {
       setListOfPosts(response.data.listOfPosts.sort((a, b) => b.createdAt - a.createdAt).reverse());
       setLikedPosts(response.data.likedPosts.map((like) => {
-        return like.postId
+        return like.PostId
       }))
     });
   }
@@ -66,6 +66,7 @@ function Profile() {
         <h3 className="mb-5">Questions</h3>
         <Row>
           <Col className="mb-5">
+            {console.log(likedPosts)}
           {listOfPosts.slice(0,next).map((post, key) => (
               <PostClass
                 key={key}

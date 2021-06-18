@@ -12,7 +12,7 @@ export default function PostClass({ post, authState, isLiked, refresh }) {
 
     const handleDeletePost = () => {
         axios
-            .delete(`http://localhost:3001/posts/${post.id}`, {
+            .delete(`${process.env.REACT_APP_HTTP_API}/posts/${post.id}`, {
                 headers: { accessToken: localStorage.getItem("accessToken") },
             })
             .then(() => {
