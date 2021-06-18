@@ -3,7 +3,6 @@ import axios from "axios";
 import { useHistory } from "react-router-dom"
 import { Form, Button, Container, Row, Col } from "react-bootstrap"
 
-
 function ChangePassword() {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -37,7 +36,6 @@ function ChangePassword() {
         }
       });
     }
-   
   };
 
   return (

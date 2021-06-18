@@ -70,12 +70,12 @@ export default function Comment({ comment, authState, isLiked, refresh }) {
                 </cite>
             </Card.Header>
             <Card.Body>
+                {isEdit}
                 {isEdit
                     ? (
                         <Formik
                             initialValues={{}}
-                            onSubmit={handleSubmit}
-                        >
+                            onSubmit={handleSubmit}>
                             <Form>
                                 <Field
                                     as="textarea"
@@ -85,8 +85,7 @@ export default function Comment({ comment, authState, isLiked, refresh }) {
                                     name="newcomment"
                                     placeholder="Enter name..."
                                     value={commentBody}
-                                    onChange={(e) => setCommentBody(e.target.value)}
-                                />
+                                    onChange={(e) => setCommentBody(e.target.value)} />
                                 <div className="form-group text-center">
                                     <br />
                                     <Button type="submit" className="btn btn-primary" disabled={!commentBody.length}>Update</Button>
